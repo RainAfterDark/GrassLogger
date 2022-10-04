@@ -292,8 +292,80 @@ public class Scene {
             }
         }
 
+        String text = "";
+
+        if (!(target instanceof EntityMonster)) {
+            return;
+        }
+
+        if (result.getAttackerId() / 1000000 == 16)
+            for (EntityAvatar avatar : this.getPlayers().get(0).getTeamManager().getActiveTeam())
+            {
+                if (avatar.getId() == result.getAttackerId())
+                {
+                    text += avatar.getAvatar().getAvatarData().getName();
+                }
+            }
+        else if (result.getAbilityIdentifier().getAbilityCasterId() / 1000000 == 16) for (EntityAvatar avatar : this.getPlayers().get(0).getTeamManager().getActiveTeam())
+        {
+            if (avatar.getId() == result.getAbilityIdentifier().getAbilityCasterId())
+            {
+                text += avatar.getAvatar().getAvatarData().getName();
+            }
+        }
+        else if (getEntityById(result.getAttackerId()) instanceof EntityClientGadget)
+        {
+            EntityClientGadget gadget = (EntityClientGadget)(getEntityById(result.getAttackerId()));
+
+            while (!(getEntityById(gadget.getOwnerEntityId()) instanceof EntityAvatar || getEntityById(gadget.getOwnerEntityId()) == null))
+                gadget = (EntityClientGadget)(getEntityById(gadget.getOwnerEntityId()));
+
+            for (EntityAvatar avatar : this.getPlayers().get(0).getTeamManager().getActiveTeam())
+            {
+                if (avatar.getId() == gadget.getOwnerEntityId())
+                {
+                    text += avatar.getAvatar().getAvatarData().getName();
+                }
+            }
+        }
+        else if (getEntityById(result.getAbilityIdentifier().getAbilityCasterId()) instanceof EntityClientGadget)
+        {
+            EntityClientGadget gadget = (EntityClientGadget)(getEntityById(result.getAbilityIdentifier().getAbilityCasterId()));
+
+            while (!(getEntityById(gadget.getOwnerEntityId()) instanceof EntityAvatar || getEntityById(gadget.getOwnerEntityId()) == null))
+                gadget = (EntityClientGadget)(getEntityById(gadget.getOwnerEntityId()));
+
+            for (EntityAvatar avatar : this.getPlayers().get(0).getTeamManager().getActiveTeam())
+            {
+                if (avatar.getId() == gadget.getOwnerEntityId())
+                {
+                    text += avatar.getAvatar().getAvatarData().getName() + " ";
+                }
+            }
+        }
+        if (text == "") {text += "Reaction";}
+        text += ' ';
+        //text += result.getAttackerId() + " ";
+        //text += result.getAbilityIdentifier().getAbilityCasterId() + " ";
+        text += result.getDamage() + " ";
+        text += result.getAbilityIdentifier().getLocalId() + " ";
+        text += result.getAbilityIdentifier().getInstancedAbilityId() + " ";
+        text += result.getAttackCount() + " ";
+        text += result.getElementDurabilityAttenuation() + " ";
+        text += result.getElementType() + " ";
+        text += result.getAmplifyReactionType() + " ";
+        text += result.getElementAmplifyRate() + " ";
+        text += result.getIsCrit() + " ";
+        text += result.getAttackTimestampMs() + " ";
+        text += result.getDefenseId();
+
+        Grasscutter.getLogger().info(text);
+
         // Sanity check
-        target.damage(result.getDamage(), result.getAttackerId());
+        if (emu.grasscutter.command.commands.DmgSwitchCommand.DealDmg)
+        {
+            target.damage(result.getDamage(), result.getAttackerId());
+        }
     }
 
     public void killEntity(GameEntity target) {
