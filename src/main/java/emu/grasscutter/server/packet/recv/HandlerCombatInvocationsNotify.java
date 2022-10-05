@@ -41,7 +41,7 @@ public class HandlerCombatInvocationsNotify extends PacketHandler {
 
                     // Check if the player is invulnerable.
                     if (
-                        attackResult.getAttackerId() != player.getTeamManager().getCurrentAvatarEntity().getId() &&
+                        attackResult.getDefenseId() == player.getTeamManager().getCurrentAvatarEntity().getId() &&
                             player.getAbilityManager().isAbilityInvulnerable()
                     ) break;
 

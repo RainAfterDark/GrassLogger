@@ -28,6 +28,7 @@ import emu.grasscutter.scripts.data.SceneGadget;
 import emu.grasscutter.scripts.data.SceneGroup;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.Position;
+import emu.grasscutter.utils.GrassLogger;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -292,11 +293,13 @@ public class Scene {
             }
         }
 
-        String text = "";
-
         if (!(target instanceof EntityMonster)) {
             return;
         }
+
+        //GrassLogger.parseAttackResult(this, result);
+
+        String text = "";
 
         if (result.getAttackerId() / 1000000 == 16)
             for (EntityAvatar avatar : this.getPlayers().get(0).getTeamManager().getActiveTeam())
@@ -343,7 +346,40 @@ public class Scene {
                 }
             }
         }
-        if (text == "") {text += "Reaction";}
+
+        if (text == "") {
+            int sourceID = GrassLogger.GetReactionEntity(result.getAbilityIdentifier().getInstancedAbilityId());
+            if (sourceID != -1) {
+                if (sourceID / 1000000 == 16)
+                    for (EntityAvatar avatar : this.getPlayers().get(0).getTeamManager().getActiveTeam())
+                    {
+                        if (avatar.getId() == sourceID)
+                        {
+                            text += avatar.getAvatar().getAvatarData().getName();
+                            break;
+                        }
+                    }
+                else if (getEntityById(sourceID) instanceof EntityClientGadget)
+                {
+                    EntityClientGadget gadget = (EntityClientGadget)(getEntityById(sourceID));
+
+                    while (!(getEntityById(gadget.getOwnerEntityId()) instanceof EntityAvatar || getEntityById(gadget.getOwnerEntityId()) == null))
+                        gadget = (EntityClientGadget)(getEntityById(gadget.getOwnerEntityId()));
+
+                    for (EntityAvatar avatar : this.getPlayers().get(0).getTeamManager().getActiveTeam())
+                    {
+                        if (avatar.getId() == gadget.getOwnerEntityId())
+                        {
+                            text += avatar.getAvatar().getAvatarData().getName();
+                        }
+                    }
+                }
+            }
+        }
+        if (text == "") {
+            //must be world ID or something else
+            text += "Unknown";
+        }
         text += ' ';
         //text += result.getAttackerId() + " ";
         //text += result.getAbilityIdentifier().getAbilityCasterId() + " ";
@@ -359,7 +395,8 @@ public class Scene {
         text += result.getAttackTimestampMs() + " ";
         text += result.getDefenseId();
 
-        Grasscutter.getLogger().info(text);
+        //Grasscutter.getLogger().info(text);
+        GrassLogger.Log(text);
 
         // Sanity check
         if (emu.grasscutter.command.commands.DmgSwitchCommand.DealDmg)

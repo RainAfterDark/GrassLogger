@@ -266,7 +266,7 @@ public class EntityAvatar extends GameEntity {
     public AbilityControlBlock getAbilityControlBlock() {
         AvatarData data = this.getAvatar().getAvatarData();
         AbilityControlBlock.Builder abilityControlBlock = AbilityControlBlock.newBuilder();
-        int embryoId = 0;
+        int embryoId = 100;
 
         // Add avatar abilities
         if (data.getAbilities() != null) {

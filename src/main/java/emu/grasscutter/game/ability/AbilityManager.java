@@ -13,10 +13,13 @@ import emu.grasscutter.game.player.Player;
 import emu.grasscutter.net.proto.AbilityInvokeEntryHeadOuterClass.AbilityInvokeEntryHead;
 import emu.grasscutter.net.proto.AbilityInvokeEntryOuterClass.AbilityInvokeEntry;
 import emu.grasscutter.net.proto.AbilityMetaModifierChangeOuterClass.AbilityMetaModifierChange;
+import emu.grasscutter.net.proto.AbilityMetaTriggerElementReactionOuterClass.AbilityMetaTriggerElementReaction;
+import emu.grasscutter.net.proto.AbilityMetaUpdateBaseReactionDamageOuterClass.AbilityMetaUpdateBaseReactionDamage;
 import emu.grasscutter.net.proto.AbilityMetaReInitOverrideMapOuterClass.AbilityMetaReInitOverrideMap;
 import emu.grasscutter.net.proto.AbilityMixinCostStaminaOuterClass.AbilityMixinCostStamina;
 import emu.grasscutter.net.proto.AbilityScalarValueEntryOuterClass.AbilityScalarValueEntry;
 import emu.grasscutter.net.proto.ModifierActionOuterClass.ModifierAction;
+import emu.grasscutter.utils.GrassLogger;
 import lombok.Getter;
 
 public final class AbilityManager extends BasePlayerManager {
@@ -36,6 +39,8 @@ public final class AbilityManager extends BasePlayerManager {
         switch (invoke.getArgumentType()) {
             case ABILITY_INVOKE_ARGUMENT_META_OVERRIDE_PARAM -> this.handleOverrideParam(invoke);
             case ABILITY_INVOKE_ARGUMENT_META_REINIT_OVERRIDEMAP -> this.handleReinitOverrideMap(invoke);
+            case ABILITY_INVOKE_ARGUMENT_META_UPDATE_BASE_REACTION_DAMAGE -> this.handleUpdateBaseReactionDamage(invoke);
+            case ABILITY_INVOKE_ARGUMENT_META_TRIGGER_ELEMENT_REACTION -> this.handleTriggerElementReaction(invoke);
             case ABILITY_INVOKE_ARGUMENT_META_MODIFIER_CHANGE -> this.handleModifierChange(invoke);
             case ABILITY_INVOKE_ARGUMENT_MIXIN_COST_STAMINA -> this.handleMixinCostStamina(invoke);
             case ABILITY_INVOKE_ARGUMENT_ACTION_GENERATE_ELEM_BALL -> this.handleGenerateElemBall(invoke);
@@ -117,6 +122,16 @@ public final class AbilityManager extends BasePlayerManager {
         for (AbilityScalarValueEntry entry : map.getOverrideMapList()) {
             entity.getMetaOverrideMap().put(entry.getKey().getStr(), entry.getFloatValue());
         }
+    }
+
+    private void handleUpdateBaseReactionDamage(AbilityInvokeEntry invoke) throws Exception {
+        AbilityMetaUpdateBaseReactionDamage reactionDamage = AbilityMetaUpdateBaseReactionDamage.parseFrom(invoke.getAbilityData());
+        GrassLogger.UpdateReactionMap(reactionDamage.getReactionType(), reactionDamage.getSourceCasterId());
+    }
+
+    private void handleTriggerElementReaction(AbilityInvokeEntry invoke) throws Exception {
+        AbilityMetaTriggerElementReaction triggerReaction = AbilityMetaTriggerElementReaction.parseFrom(invoke.getAbilityData());
+        GrassLogger.UpdateReactionMap(triggerReaction.getElementReactionType(), triggerReaction.getTriggerEntityId());
     }
 
     private void handleModifierChange(AbilityInvokeEntry invoke) throws Exception {
