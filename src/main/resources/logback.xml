@@ -2,8 +2,12 @@
   <variable name="LOG_LEVEL" value="${LOG_LEVEL:-INFO}" />
 
   <appender name="STDOUT" class="emu.grasscutter.utils.JlineLogbackAppender">
-    <encoder>
+    <encoder class="emu.grasscutter.utils.MultiLayoutPattern">
       <pattern>%d{HH:mm:ss} &lt;%highlight(%level):%gray(%class{0})&gt; %msg%n</pattern>
+      <rule>
+        <logger>emu.grasscutter.utils.GrassLogger</logger>
+        <pattern>%msg%n</pattern>
+      </rule>
     </encoder>
   </appender>
 
@@ -13,8 +17,12 @@
       <fileNamePattern>logs/log.%d{yyyy-MM-dd}_%d{HH}.log.gz</fileNamePattern>
       <maxHistory>24</maxHistory>
     </rollingPolicy>
-    <encoder>
+    <encoder class="emu.grasscutter.utils.MultiLayoutPattern">
       <pattern>%d{yyyy-MM-dd'T'HH:mm:ss'Z'} &lt;%level:%class&gt; %m%n</pattern>
+      <rule>
+        <logger>emu.grasscutter.utils.GrassLogger</logger>
+        <pattern>%m%n</pattern>
+      </rule>
     </encoder>
   </appender>
 

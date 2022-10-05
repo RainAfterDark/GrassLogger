@@ -13,6 +13,7 @@ import emu.grasscutter.game.player.Player;
 import emu.grasscutter.net.proto.AbilityInvokeEntryHeadOuterClass.AbilityInvokeEntryHead;
 import emu.grasscutter.net.proto.AbilityInvokeEntryOuterClass.AbilityInvokeEntry;
 import emu.grasscutter.net.proto.AbilityMetaModifierChangeOuterClass.AbilityMetaModifierChange;
+import emu.grasscutter.net.proto.AbilityMetaUpdateBaseReactionDamageOuterClass.AbilityMetaUpdateBaseReactionDamage;
 import emu.grasscutter.net.proto.AbilityMetaReInitOverrideMapOuterClass.AbilityMetaReInitOverrideMap;
 import emu.grasscutter.net.proto.AbilityMixinCostStaminaOuterClass.AbilityMixinCostStamina;
 import emu.grasscutter.net.proto.AbilityScalarValueEntryOuterClass.AbilityScalarValueEntry;
@@ -36,6 +37,7 @@ public final class AbilityManager extends BasePlayerManager {
         switch (invoke.getArgumentType()) {
             case ABILITY_INVOKE_ARGUMENT_META_OVERRIDE_PARAM -> this.handleOverrideParam(invoke);
             case ABILITY_INVOKE_ARGUMENT_META_REINIT_OVERRIDEMAP -> this.handleReinitOverrideMap(invoke);
+            case ABILITY_INVOKE_ARGUMENT_META_UPDATE_BASE_REACTION_DAMAGE -> this.handleUpdateBaseReactionDamage(invoke);
             case ABILITY_INVOKE_ARGUMENT_META_MODIFIER_CHANGE -> this.handleModifierChange(invoke);
             case ABILITY_INVOKE_ARGUMENT_MIXIN_COST_STAMINA -> this.handleMixinCostStamina(invoke);
             case ABILITY_INVOKE_ARGUMENT_ACTION_GENERATE_ELEM_BALL -> this.handleGenerateElemBall(invoke);
@@ -117,6 +119,16 @@ public final class AbilityManager extends BasePlayerManager {
         for (AbilityScalarValueEntry entry : map.getOverrideMapList()) {
             entity.getMetaOverrideMap().put(entry.getKey().getStr(), entry.getFloatValue());
         }
+    }
+
+    private void handleUpdateBaseReactionDamage(AbilityInvokeEntry invoke) throws Exception {
+        GameEntity entity = this.player.getScene().getEntityById(invoke.getEntityId());
+
+        if (entity == null) {
+            return;
+        }
+
+        AbilityMetaUpdateBaseReactionDamage brd = AbilityMetaUpdateBaseReactionDamage.parseFrom(invoke.getAbilityData());
     }
 
     private void handleModifierChange(AbilityInvokeEntry invoke) throws Exception {
