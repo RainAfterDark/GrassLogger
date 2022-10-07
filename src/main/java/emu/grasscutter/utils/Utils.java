@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.config.ConfigContainer;
 import emu.grasscutter.data.DataLoader;
+import emu.grasscutter.data.GameData;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -103,6 +104,7 @@ public final class Utils {
         while (v8 < str.length()) {
             v7 = str.charAt(v8++) + 131 * v7;
         }
+        GameData.getAbilityHashes().put(v7, str);
         return v7;
     }
 

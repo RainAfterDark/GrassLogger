@@ -126,12 +126,12 @@ public final class AbilityManager extends BasePlayerManager {
 
     private void handleUpdateBaseReactionDamage(AbilityInvokeEntry invoke) throws Exception {
         AbilityMetaUpdateBaseReactionDamage reactionDamage = AbilityMetaUpdateBaseReactionDamage.parseFrom(invoke.getAbilityData());
-        GrassLogger.UpdateReactionMap(reactionDamage.getReactionType(), reactionDamage.getSourceCasterId());
+        GrassLogger.updateReactionMap(reactionDamage.getReactionType(), reactionDamage.getSourceCasterId());
     }
 
     private void handleTriggerElementReaction(AbilityInvokeEntry invoke) throws Exception {
         AbilityMetaTriggerElementReaction triggerReaction = AbilityMetaTriggerElementReaction.parseFrom(invoke.getAbilityData());
-        GrassLogger.UpdateReactionMap(triggerReaction.getElementReactionType(), triggerReaction.getTriggerEntityId());
+        GrassLogger.updateReactionMap(triggerReaction.getElementReactionType(), triggerReaction.getTriggerEntityId());
     }
 
     private void handleModifierChange(AbilityInvokeEntry invoke) throws Exception {

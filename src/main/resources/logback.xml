@@ -17,12 +17,19 @@
       <fileNamePattern>logs/log.%d{yyyy-MM-dd}_%d{HH}.log.gz</fileNamePattern>
       <maxHistory>24</maxHistory>
     </rollingPolicy>
-    <encoder class="emu.grasscutter.utils.MultiLayoutPattern">
+    <encoder>
       <pattern>%d{yyyy-MM-dd'T'HH:mm:ss'Z'} &lt;%level:%class&gt; %m%n</pattern>
-      <rule>
-        <logger>emu.grasscutter.utils.GrassLogger</logger>
+    </encoder>
+  </appender>
+
+  <appender name="GL-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/grasslogger/latest.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/grasslogger/log.%d{yyyy-MM-dd}_%d{HH}.log.gz</fileNamePattern>
+      <maxHistory>24</maxHistory>
+    </rollingPolicy>
+    <encoder>
         <pattern>%m%n</pattern>
-      </rule>
     </encoder>
   </appender>
 
@@ -38,6 +45,11 @@
   <logger name="org.eclipse.jetty" level="OFF" />
 
   <logger name="emu.grasscutter" level="${LOG_LEVEL}" />
+
+  <logger name="emu.grasscutter.utils.GrassLogger" level="INFO" additivity="false">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="GL-FILE" />
+  </logger>
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />

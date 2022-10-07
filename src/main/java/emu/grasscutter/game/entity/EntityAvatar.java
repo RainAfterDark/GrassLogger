@@ -34,6 +34,7 @@ import emu.grasscutter.server.event.player.PlayerMoveEvent;
 import emu.grasscutter.server.packet.send.PacketAvatarFightPropUpdateNotify;
 import emu.grasscutter.server.packet.send.PacketEntityFightPropChangeReasonNotify;
 import emu.grasscutter.server.packet.send.PacketEntityFightPropUpdateNotify;
+import emu.grasscutter.utils.GrassLogger;
 import emu.grasscutter.utils.Position;
 import emu.grasscutter.utils.ProtoHelper;
 import emu.grasscutter.utils.Utils;
@@ -266,7 +267,7 @@ public class EntityAvatar extends GameEntity {
     public AbilityControlBlock getAbilityControlBlock() {
         AvatarData data = this.getAvatar().getAvatarData();
         AbilityControlBlock.Builder abilityControlBlock = AbilityControlBlock.newBuilder();
-        int embryoId = 100;
+        int embryoId = GrassLogger.embryoIndexOffset;
 
         // Add avatar abilities
         if (data.getAbilities() != null) {
@@ -322,7 +323,9 @@ public class EntityAvatar extends GameEntity {
         }
 
         //
-        return abilityControlBlock.build();
+        AbilityControlBlock builtAbilities = abilityControlBlock.build();
+        GrassLogger.registerAbilities(this, builtAbilities);
+        return builtAbilities;
     }
 
     /**

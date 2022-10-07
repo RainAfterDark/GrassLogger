@@ -7,17 +7,20 @@ import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.AbilitySyncStateInfoOuterClass.AbilitySyncStateInfo;
 import emu.grasscutter.net.proto.SceneTeamAvatarOuterClass.SceneTeamAvatar;
 import emu.grasscutter.net.proto.SceneTeamUpdateNotifyOuterClass.SceneTeamUpdateNotify;
+import emu.grasscutter.utils.GrassLogger;
 
 public class PacketSceneTeamUpdateNotify extends BasePacket {
-	
+
 	public PacketSceneTeamUpdateNotify(Player player) {
 		super(PacketOpcodes.SceneTeamUpdateNotify);
 
 		SceneTeamUpdateNotify.Builder proto = SceneTeamUpdateNotify.newBuilder()
 				.setIsInMp(player.getWorld().isMultiplayer());
-		
+
+        GrassLogger.reset();
 		for (Player p : player.getWorld().getPlayers()) {
 			for (EntityAvatar entityAvatar : p.getTeamManager().getActiveTeam()) {
+                GrassLogger.registerAvatar(entityAvatar);
 				SceneTeamAvatar.Builder avatarProto = SceneTeamAvatar.newBuilder()
 						.setPlayerUid(p.getUid())
 						.setAvatarGuid(entityAvatar.getAvatar().getGuid())
@@ -31,16 +34,17 @@ public class PacketSceneTeamUpdateNotify extends BasePacket {
 						.setAvatarAbilityInfo(AbilitySyncStateInfo.newBuilder())
 						.setWeaponAbilityInfo(AbilitySyncStateInfo.newBuilder())
 						.setAbilityControlBlock(entityAvatar.getAbilityControlBlock());
-				
+
 				if (player.getWorld().isMultiplayer()) {
 					avatarProto.setAvatarInfo(entityAvatar.getAvatar().toProto());
 					avatarProto.setSceneAvatarInfo(entityAvatar.getSceneAvatarInfo()); // why mihoyo...
 				}
-				
+
 				proto.addSceneTeamAvatarList(avatarProto);
 			}
 		}
-		
+
+        GrassLogger.logTeamUpdate();
 		this.setData(proto);
 	}
 }

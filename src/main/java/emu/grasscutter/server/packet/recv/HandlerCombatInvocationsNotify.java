@@ -19,6 +19,7 @@ import emu.grasscutter.net.proto.PlayerDieTypeOuterClass;
 import emu.grasscutter.server.event.entity.EntityMoveEvent;
 import emu.grasscutter.server.game.GameSession;
 import emu.grasscutter.server.packet.send.PacketEntityFightPropUpdateNotify;
+import emu.grasscutter.utils.GrassLogger;
 import emu.grasscutter.utils.Position;
 
 @Opcodes(PacketOpcodes.CombatInvocationsNotify)
@@ -38,6 +39,7 @@ public class HandlerCombatInvocationsNotify extends PacketHandler {
                     EvtBeingHitInfo hitInfo = EvtBeingHitInfo.parseFrom(entry.getCombatData());
                     AttackResult attackResult = hitInfo.getAttackResult();
                     Player player = session.getPlayer();
+                    GrassLogger.parseAttackResult(player.getScene(), attackResult);
 
                     // Check if the player is invulnerable.
                     if (
