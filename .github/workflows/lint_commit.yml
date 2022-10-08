@@ -11,6 +11,7 @@ on:
       - "manage_languages.py"
     branches:
       - "development"
+      - "grasslogger"
 jobs:
   Make-Lint-Commits:
     runs-on: ubuntu-latest

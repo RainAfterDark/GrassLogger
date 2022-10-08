@@ -10,6 +10,7 @@ on:
     branches:
       - "stable"
       - "development"
+      - "grasslogger"
   pull_request:
     paths:
       - ".github/workflows/**"
