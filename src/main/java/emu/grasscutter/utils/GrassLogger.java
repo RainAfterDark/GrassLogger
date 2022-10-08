@@ -1,7 +1,5 @@
 package emu.grasscutter.utils;
 
-import static emu.grasscutter.config.Configuration.*;
-
 import ch.qos.logback.classic.Logger;
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.excels.GadgetData;
@@ -10,7 +8,6 @@ import emu.grasscutter.game.entity.EntityAvatar;
 import emu.grasscutter.game.entity.EntityClientGadget;
 import emu.grasscutter.game.entity.EntityMonster;
 import emu.grasscutter.game.props.*;
-import emu.grasscutter.game.world.Scene;
 import emu.grasscutter.net.proto.AbilityControlBlockOuterClass.AbilityControlBlock;
 import emu.grasscutter.net.proto.AbilityEmbryoOuterClass.AbilityEmbryo;
 import emu.grasscutter.net.proto.AttackResultOuterClass.AttackResult;
@@ -30,13 +27,17 @@ public class GrassLogger {
     private static final Logger log = (Logger) LoggerFactory.getLogger(GrassLogger.class);
     private static int uidCount = 0;
     private static long lastTime = 0;
-    private static Int2IntMap reactionMap = new Int2IntOpenHashMap();
-    private static Int2ObjectMap<EntityAvatar> avatarMap = new Int2ObjectLinkedOpenHashMap<>();
-    private static Map<String, AbilityControlBlock> abilityMap = new HashMap<>();
-    private static Long2ObjectMap<MonsterAffix> monsterAffixMap = new Long2ObjectOpenHashMap<>();
-    private static Int2ObjectMap<String> monsterNameMap = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<String> avatarNameMap = new Int2ObjectLinkedOpenHashMap<>();
+    private static final Map<String, AbilityControlBlock> abilityMap = new HashMap<>();
+    private static final Int2IntMap reactionMap = new Int2IntOpenHashMap();
+    private static final Int2IntMap gadgetOwnerMap = new Int2IntOpenHashMap();
+    private static final Int2IntMap gadgetIdMap = new Int2IntOpenHashMap();
+    private static final Long2ObjectMap<MonsterAffix> monsterAffixMap = new Long2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<String> monsterNameMap = new Int2ObjectOpenHashMap<>();
 
-    private static String getUID() {return Integer.toString(++uidCount);}
+    private static String getUID() {
+        return Integer.toString(++uidCount);
+    }
     private static String getDeltaTime(long currentTime) {
         long deltaTime = currentTime - lastTime;
         if (lastTime == 0) deltaTime = 0;
@@ -54,9 +55,13 @@ public class GrassLogger {
         return elementNames[elementId];
     }
 
-    private static EntityType getEntityType(int id) {return EntityType.getTypeByValue(id >> 24);}
+    private static EntityType getEntityType(int id) {
+        return EntityType.getTypeByValue(id >> 24);
+    }
 
-    private static String getAvatarName(int id) {return avatarMap.get(id).getAvatar().getAvatarData().getName();}
+    private static String getAvatarName(int id) {
+        return avatarNameMap.get(id);
+    }
 
     private static class MonsterAffix {
         private static int letterCount = 0;
@@ -65,13 +70,12 @@ public class GrassLogger {
 
         public MonsterAffix() {
             int n = letterCount++;
-            String letter = "";
-            do {
-                int d = n % 26;
-                n = n / 26;
-                letter += (char) (65 + d);
-            } while (n > 0);
-            this.letter = letter;
+            char[] b26 = Integer.toString(n, 26).toCharArray();
+            for (int i = 0; i < b26.length; i++) {
+                // original offsets are 10 and 49, subtracted by 32 to get UPPERCASE chars
+                b26[i] += b26[i] > '9' ? -22 : 17;
+            }
+            this.letter = new String(b26);
             this.count = 1;
         }
     }
@@ -88,21 +92,15 @@ public class GrassLogger {
         return affix.letter + affix.count;
     }
 
-    private static String getMonsterName(EntityMonster monster) {
-        int id = monster.getId();
-        if (monsterNameMap.containsKey(id)) return monsterNameMap.get(id);
-        MonsterData monsterData = monster.getMonsterData();
-        long hash = monsterData.getDescribeData().getNameTextMapHash();
-        String affix = getMonsterAffix(hash);
-        String name = affix + " " + monsterData.getMonsterName(); //preferably this should take from the name hash, but fuck TextMaps
-        monsterNameMap.put(id, name);
-        return name;
+    private static String getMonsterName(int id) {
+        return monsterNameMap.get(id);
     }
 
     private static String getAbilityName(String avatarName, int aid) {
         AbilityControlBlock abilities = abilityMap.get(avatarName);
-        AbilityEmbryo embryo = abilities.getAbilityEmbryoList(aid - embryoIndexOffset - 1);
-        if (embryo != null) {
+        int index = aid - embryoIndexOffset - 1;
+        if (index < abilities.getAbilityEmbryoListCount()) {
+            AbilityEmbryo embryo = abilities.getAbilityEmbryoList(index);
             int hash = embryo.getAbilityNameHash();
             String name = GameData.getAbilityHashes().get(hash);
             if (name != null) return name;
@@ -111,74 +109,57 @@ public class GrassLogger {
         return Integer.toString(aid);
     }
 
-    private static String getGadgetName(int configId) {
-        GadgetData gadget = GameData.getGadgetDataMap().get(configId);
-        if (gadget != null) {
-            String name = gadget.getJsonName();
+    private static String getGadgetName(int id) {
+        int gadgetId = gadgetIdMap.get(id);
+        GadgetData gadgetData = GameData.getGadgetDataMap().get(gadgetId);
+        if (gadgetData != null) {
+            String name = gadgetData.getJsonName();
             if (name != null) return name;
         }
-        return Integer.toString(configId);
+        return Integer.toString(gadgetId);
     }
 
-    private static String getRoot(Scene scene, int id) {
+    private static String getRoot(int id) {
         EntityType type = getEntityType(id);
-
         switch (type) {
-            case Avatar -> {return getAvatarName(id);}
-            case Monster -> {
-                EntityMonster monster = (EntityMonster) scene.getEntityById(id);
-                return getMonsterName(monster);
-            }
-            case Level -> {return "World";}
-            case Team -> {return "Team";}
-            default -> {
-                if (scene.getEntityById(id) instanceof EntityClientGadget) {
-                    EntityClientGadget gadget = (EntityClientGadget) scene.getEntityById(id);
-                    return getRoot(scene, gadget.getOriginalOwnerEntityId());
-                }
-                return Integer.toString(id);
-            }
+            case Avatar -> { return getAvatarName(id); }
+            case Foundation -> { return getRoot(gadgetOwnerMap.get(id)); }
+            case Monster -> { return getMonsterName(id); }
+            case Level, MPLevel, Team -> { return type.toString(); }
+            default -> { return Integer.toString(id); }
         }
     }
 
-    private static String getAttacker(Scene scene, int attackerId, int casterId, int aid) {
+    private static String getAttacker(int attackerId, int casterId, int aid) {
         if (getEntityType(attackerId) == EntityType.Gadget || getEntityType(casterId) == EntityType.Gadget) {
-            String ar = AbilityReaction.getTypeByValue(aid).toString();
-            int br = BaseReaction.getTypeByName(ar).getValue();
-            //Log(ar + " " + br + " " + reactionMap.getOrDefault(br, -1));
-            return getRoot(scene, reactionMap.get(br));
+            String abilityReaction = AbilityReaction.getTypeByValue(aid).toString();
+            int baseReaction = BaseReaction.getTypeByName(abilityReaction).getValue();
+            int sourceId = reactionMap.getOrDefault(baseReaction, -1);
+            return sourceId != -1 ? getRoot(sourceId) : "Unknown";
         }
-        return getRoot(scene, attackerId);
+        return getRoot(attackerId);
     }
 
-    private static String getSource(Scene scene, int attackerId, int casterId, ElementType element, int aid, int defenseId) {
+    private static String getSource(int attackerId, int casterId, ElementType element, int aid, int defenseId) {
         EntityType type = getEntityType(attackerId);
-
-        if (type == EntityType.Gadget || getEntityType(casterId) == EntityType.Gadget) {
+        if (type == EntityType.Gadget || getEntityType(casterId) == EntityType.Gadget)
             return "Reaction";
-        }
-
         if (attackerId == defenseId) {
-            if (element == ElementType.None) {
+            if (element == ElementType.None)
                 return "Fall Damage";
-            }
             return "Self-Inflicted";
         }
 
-        if (scene.getEntityById(attackerId) instanceof EntityClientGadget) {
-            return getGadgetName(((EntityClientGadget) scene.getEntityById(attackerId)).getGadgetId());
-        }
-
-        if (type == EntityType.Avatar) {
-            if (aid > embryoIndexOffset) {
-                return getAbilityName(getAvatarName(attackerId), aid);
+        switch (type) {
+            case Avatar -> {
+                if (aid > embryoIndexOffset)
+                    return getAbilityName(getAvatarName(attackerId), aid);
+                return "Direct";
             }
-            return "Direct";
-        } else if (type == EntityType.Level) {
-            return "Environment";
+            case Foundation -> { return getGadgetName(attackerId); }
+            case Level -> { return "Environment"; }
+            default -> { return type.toString(); }
         }
-
-        return type.toString();
     }
 
     private static String getReaction(int aid, int mid, ElementType element, String attacker) {
@@ -210,15 +191,14 @@ public class GrassLogger {
         return "None";
     }
 
-    private static String getDefender(Scene scene, int defenseId) {
-        if (scene.getEntityById(defenseId) instanceof EntityClientGadget) {
-            return getGadgetName(((EntityClientGadget) scene.getEntityById(defenseId)).getGadgetId());
-        }
-        return getRoot(scene, defenseId);
+    private static String getDefender(int defenseId) {
+        if (getEntityType(defenseId) == EntityType.Foundation)
+            return getGadgetName(defenseId);
+        return getRoot(defenseId);
     }
 
     public static void registerAvatar(EntityAvatar avatar) {
-        avatarMap.put(avatar.getId(), avatar);
+        avatarNameMap.put(avatar.getId(), avatar.getAvatar().getAvatarData().getName());
     }
 
     public static final int embryoIndexOffset = 100;
@@ -226,18 +206,31 @@ public class GrassLogger {
         abilityMap.put(avatar.getAvatar().getAvatarData().getName(), abilities);
     }
 
+    public static void registerGadget(EntityClientGadget gadget) {
+        int id = gadget.getId();
+        gadgetOwnerMap.put(id, gadget.getOriginalOwnerEntityId());
+        gadgetIdMap.put(id, gadget.getGadgetId());
+    }
+
+    public static void registerMonster(EntityMonster monster) {
+        MonsterData monsterData = monster.getMonsterData();
+        long hash = monsterData.getDescribeData().getNameTextMapHash();
+        String affix = getMonsterAffix(hash);
+        String name = affix + " " + monsterData.getMonsterName(); //preferably this should take from the name hash, but fuck TextMaps
+        monsterNameMap.put(monster.getId(), name);
+    }
+
     public static void updateReactionMap(int reactionID, int entityID) {
         reactionMap.put(reactionID, entityID);
-        //Log(reactionID + " " + entityID);
     }
 
     public static void reset() {
         lastTime = 0;
-        avatarMap.clear();
+        avatarNameMap.clear();
         reactionMap.clear();
     }
 
-    public static void parseAttackResult(Scene scene, AttackResult attackResult) {
+    public static void parseAttackResult(AttackResult attackResult) {
         int attackerId = attackResult.getAttackerId();
         int casterId = attackResult.getAbilityIdentifier().getAbilityCasterId();
         ElementType element = ElementType.getTypeByValue(attackResult.getElementType());
@@ -246,34 +239,27 @@ public class GrassLogger {
         int defenseId = attackResult.getDefenseId();
 
         List<String> attackData = Arrays.asList(
-            getSource(scene, attackerId, casterId, element, aid, defenseId),
-            getAttacker(scene, attackerId, casterId, aid),
+            getSource(attackerId, casterId, element, aid, defenseId),
+            getAttacker(attackerId, casterId, aid),
             Float.toString(attackResult.getDamage()),
             Boolean.toString(attackResult.getIsCrit()),
             Boolean.toString(attackResult.getElementDurabilityAttenuation() == 1),
             getElementName(element.getValue()),
-            getReaction(aid, mid, element, getRoot(scene, attackerId)),
+            getReaction(aid, mid, element, getRoot(attackerId)),
             AmplificationType.getTypeByValue(attackResult.getAmplifyReactionType()).toString(),
             Float.toString(attackResult.getElementAmplifyRate()),
             Integer.toString(attackResult.getAttackCount()),
             Integer.toString(aid),
             Integer.toString(mid),
-            getDefender(scene, defenseId)
+            getDefender(defenseId)
         );
         log("DAMAGE", attackData);
     }
 
     public static void logTeamUpdate() {
-        List<EntityAvatar> avatarList = new ArrayList<EntityAvatar>(avatarMap.values());
-        List<String> teamUpdate = new ArrayList<>(Math.max(
-            GAME_OPTIONS.avatarLimits.singlePlayerTeam,
-            GAME_OPTIONS.avatarLimits.multiplayerTeam
-        ) + 1);
-        teamUpdate.add("TEAM");
-        for (EntityAvatar avatar : avatarList) {
-            teamUpdate.add(avatar.getAvatar().getAvatarData().getName());
-        }
-        log(String.join(",", teamUpdate));
+        List<String> avatarList = new ArrayList<>(avatarNameMap.values());
+        avatarList.add(0, "TEAM");
+        log(String.join(",", avatarList));
     }
 
     public static void log(String type, List<String> dataList) {
