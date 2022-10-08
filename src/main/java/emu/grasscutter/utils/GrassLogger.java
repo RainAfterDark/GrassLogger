@@ -18,7 +18,6 @@ import emu.grasscutter.net.proto.AttackResultOuterClass.AttackResult;
 import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import org.luaj.vm2.ast.Str;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
@@ -148,7 +147,6 @@ public class GrassLogger {
             int br = BaseReaction.getTypeByName(ar).getValue();
             //Log(ar + " " + br + " " + reactionMap.getOrDefault(br, -1));
             return getRoot(scene, reactionMap.get(br));
-
         }
         return getRoot(scene, attackerId);
     }
@@ -187,8 +185,8 @@ public class GrassLogger {
         if (element == ElementType.Grass) {
             if (aid == 2 && mid == 5) {
                 return "Bloom";
-            } else if ((aid == 1 && mid == 2) &&
-                attacker != "Collei") {
+            } else if (aid == 1 && mid == 2 &&
+                !Objects.equals(attacker, "Collei")) {
                 return "Hyperbloom";
             }
         }
