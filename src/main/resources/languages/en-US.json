@@ -161,6 +161,12 @@
       "giveall_success": "Successfully gave all items.",
       "description": "Gives an item to you or the specified player. Can also give all weapons, avatars and/or materials, and can construct custom artifacts."
     },
+    "givesalt": {
+      "description": "Gives all lvl 90 characters with all constellations as items, and all weapons from R1 to R5."
+    },
+    "dmgswitch": {
+      "description": "Toggles damage to enemies (logger unaffected)."
+    },
     "heal": {
       "success": "All characters have been healed.",
       "description": "Heal all characters in your current team."

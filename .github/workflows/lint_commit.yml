@@ -10,7 +10,6 @@ on:
       - "format_whitespace.py"
       - "manage_languages.py"
     branches:
-      - "development"
       - "grasslogger"
 jobs:
   Make-Lint-Commits:
@@ -31,7 +30,7 @@ jobs:
       - run: git stash
       - run: git checkout LintRatchet
       # - run: git merge development
-      - run: git reset --hard development
+      - run: git reset --hard grasslogger
       - run: git stash pop || true
 
       - name: Commit any whitespace changes
