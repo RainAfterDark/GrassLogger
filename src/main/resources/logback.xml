@@ -23,9 +23,9 @@
   </appender>
 
   <appender name="GL-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>logs/grasslogger/latest.log</file>
+    <file>logs/grasslogger/latest.txt</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>logs/grasslogger/log.%d{yyyy-MM-dd}_%d{HH}.log.gz</fileNamePattern>
+      <fileNamePattern>logs/grasslogger/log.%d{yyyy-MM-dd}_%d{HH}.txt.gz</fileNamePattern>
       <maxHistory>24</maxHistory>
     </rollingPolicy>
     <encoder>

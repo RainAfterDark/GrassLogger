@@ -38,6 +38,7 @@ public class GrassLogger {
     private static String getUID() {
         return Integer.toString(++uidCount);
     }
+
     private static String getDeltaTime(long currentTime) {
         long deltaTime = currentTime - lastTime;
         if (lastTime == 0) deltaTime = 0;
@@ -104,9 +105,9 @@ public class GrassLogger {
             int hash = embryo.getAbilityNameHash();
             String name = GameData.getAbilityHashes().get(hash);
             if (name != null) return name;
-            return Integer.toString(hash);
+            return "UA-" + hash;
         }
-        return Integer.toString(aid);
+        return "AID out of bounds"; //should never happen
     }
 
     private static String getGadgetName(int id) {
@@ -116,7 +117,7 @@ public class GrassLogger {
             String name = gadgetData.getJsonName();
             if (name != null) return name;
         }
-        return Integer.toString(gadgetId);
+        return "UG-" + gadgetId;
     }
 
     private static String getRoot(int id) {
@@ -213,10 +214,14 @@ public class GrassLogger {
     }
 
     public static void registerMonster(EntityMonster monster) {
+        String name;
         MonsterData monsterData = monster.getMonsterData();
-        long hash = monsterData.getDescribeData().getNameTextMapHash();
-        String affix = getMonsterAffix(hash);
-        String name = affix + " " + monsterData.getMonsterName(); //preferably this should take from the name hash, but fuck TextMaps
+        if (monsterData != null) {
+            long hash = monsterData.getDescribeData().getNameTextMapHash();
+            String affix = getMonsterAffix(hash);
+            name = affix + " " + monsterData.getMonsterName(); //preferably this should take from the name hash, but fuck TextMaps
+        } else
+            name = getMonsterAffix(-1) + " Unknown";
         monsterNameMap.put(monster.getId(), name);
     }
 

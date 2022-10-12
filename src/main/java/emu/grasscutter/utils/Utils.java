@@ -104,7 +104,7 @@ public final class Utils {
         while (v8 < str.length()) {
             v7 = str.charAt(v8++) + 131 * v7;
         }
-        GameData.getAbilityHashes().put(v7, str);
+        GameData.getAbilityHashes().putIfAbsent(v7, str);
         return v7;
     }
 
