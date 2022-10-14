@@ -165,12 +165,14 @@ public class GrassLogger {
 
     private static String getReaction(int aid, int mid, ElementType element, String attacker) {
         if (element == ElementType.Grass) {
-            if (aid == 2 && mid == 5) {
-                return "Bloom";
+            if (aid == 2) {
+                if (mid == 5) return "Bloom";
+                else if (mid == 4) return "BountifulBloom";
             } else if (aid == 1 && mid == 2 &&
                 !Objects.equals(attacker, "Collei")) {
                 return "Hyperbloom";
             }
+            return "None";
         }
 
         AbilityReaction reaction = AbilityReaction.getTypeByValue(aid);
