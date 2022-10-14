@@ -39,7 +39,7 @@ public class HandlerCombatInvocationsNotify extends PacketHandler {
                     EvtBeingHitInfo hitInfo = EvtBeingHitInfo.parseFrom(entry.getCombatData());
                     AttackResult attackResult = hitInfo.getAttackResult();
                     Player player = session.getPlayer();
-                    GrassLogger.parseAttackResult(attackResult);
+                    GrassLogger.logAttackResult(attackResult);
 
                     // Check if the player is invulnerable.
                     if (

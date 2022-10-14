@@ -2,6 +2,7 @@ package emu.grasscutter.utils;
 
 import ch.qos.logback.classic.Logger;
 import emu.grasscutter.data.GameData;
+import emu.grasscutter.data.excels.AvatarSkillData;
 import emu.grasscutter.data.excels.GadgetData;
 import emu.grasscutter.data.excels.MonsterData;
 import emu.grasscutter.game.entity.EntityAvatar;
@@ -110,6 +111,17 @@ public class GrassLogger {
         return "AID out of bounds"; //should never happen
     }
 
+    private static String getSkillName(int skillId) {
+        AvatarSkillData skill = GameData.getAvatarSkillDataMap().get(skillId);
+        if (skill != null) {
+            String abilityName = skill.getAbilityName();
+            if (!abilityName.isEmpty()) return abilityName;
+            String skillIcon = skill.getSkillIcon();
+            if (!skillIcon.isEmpty()) return skillIcon;
+        }
+        return Integer.toString(skillId);
+    }
+
     private static String getGadgetName(int id) {
         int gadgetId = gadgetIdMap.get(id);
         GadgetData gadgetData = GameData.getGadgetDataMap().get(gadgetId);
@@ -172,7 +184,6 @@ public class GrassLogger {
                 !Objects.equals(attacker, "Collei")) {
                 return "Hyperbloom";
             }
-            return "None";
         }
 
         AbilityReaction reaction = AbilityReaction.getTypeByValue(aid);
@@ -237,7 +248,7 @@ public class GrassLogger {
         reactionMap.clear();
     }
 
-    public static void parseAttackResult(AttackResult attackResult) {
+    public static void logAttackResult(AttackResult attackResult) {
         int attackerId = attackResult.getAttackerId();
         int casterId = attackResult.getAbilityIdentifier().getAbilityCasterId();
         ElementType element = ElementType.getTypeByValue(attackResult.getElementType());
@@ -261,6 +272,14 @@ public class GrassLogger {
             getDefender(defenseId)
         );
         log("DAMAGE", attackData);
+    }
+
+    public static void logSkillCast(int skillId, int casterId) {
+        List<String> skillCastData = Arrays.asList(
+            getSkillName(skillId),
+            getRoot(casterId)
+        );
+        log("SKILL", skillCastData);
     }
 
     public static void logTeamUpdate() {

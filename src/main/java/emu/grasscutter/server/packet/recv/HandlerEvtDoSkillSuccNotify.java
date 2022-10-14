@@ -5,6 +5,7 @@ import emu.grasscutter.net.packet.PacketHandler;
 import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.EvtDoSkillSuccNotifyOuterClass.EvtDoSkillSuccNotify;
 import emu.grasscutter.server.game.GameSession;
+import emu.grasscutter.utils.GrassLogger;
 
 @Opcodes(PacketOpcodes.EvtDoSkillSuccNotify)
 public class HandlerEvtDoSkillSuccNotify extends PacketHandler {
@@ -16,6 +17,8 @@ public class HandlerEvtDoSkillSuccNotify extends PacketHandler {
         var player = session.getPlayer();
         int skillId = notify.getSkillId();
         int casterId = notify.getCasterId();
+
+        GrassLogger.logSkillCast(skillId, casterId);
 
         // Call skill perform in the player's ability manager.
         player.getAbilityManager().onSkillStart(session.getPlayer(), skillId, casterId);

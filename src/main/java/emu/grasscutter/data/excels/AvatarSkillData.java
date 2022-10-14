@@ -19,6 +19,7 @@ public class AvatarSkillData extends GameResource {
     @Getter private long nameTextMapHash;
     @Getter private long descTextMapHash;
     @Getter private String abilityName;
+    @Getter private String skillIcon;
 
     @Override
     public int getId() {
