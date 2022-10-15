@@ -8,6 +8,7 @@ import emu.grasscutter.data.excels.MonsterData;
 import emu.grasscutter.game.entity.EntityAvatar;
 import emu.grasscutter.game.entity.EntityClientGadget;
 import emu.grasscutter.game.entity.EntityMonster;
+import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.props.*;
 import emu.grasscutter.net.proto.AbilityControlBlockOuterClass.AbilityControlBlock;
 import emu.grasscutter.net.proto.AbilityEmbryoOuterClass.AbilityEmbryo;
@@ -175,6 +176,12 @@ public class GrassLogger {
         }
     }
 
+    private static String getApply(float eda) {
+        if (eda == 1) return "true";
+        else if (eda == 0) return "false";
+        return Float.toString(eda);
+    }
+
     private static String getReaction(int aid, int mid, ElementType element, String attacker) {
         if (element == ElementType.Grass) {
             if (aid == 2) {
@@ -227,15 +234,20 @@ public class GrassLogger {
     }
 
     public static void registerMonster(EntityMonster monster) {
-        String name;
+        String affix, name;
         MonsterData monsterData = monster.getMonsterData();
         if (monsterData != null) {
             long hash = monsterData.getDescribeData().getNameTextMapHash();
-            String affix = getMonsterAffix(hash);
-            name = affix + " " + monsterData.getMonsterName(); //preferably this should take from the name hash, but fuck TextMaps
-        } else
-            name = getMonsterAffix(-1) + " Unknown";
+            affix = getMonsterAffix(hash);
+            name = monsterData.getMonsterName(); //preferably this should take from the name hash, but fuck TextMaps
+        } else {
+            affix = getMonsterAffix(-1);
+            name = "Unknown";
+        }
+        name = affix + " " + name;
         monsterNameMap.put(monster.getId(), name);
+        Player player = monster.getScene().getPlayers().get(0); //singleplayer only
+        player.getServer().getChatSystem().sendPrivateMessageFromServer(player.getUid(), "Spawned " + affix);
     }
 
     public static void updateReactionMap(int reactionID, int entityID) {
@@ -261,7 +273,7 @@ public class GrassLogger {
             getAttacker(attackerId, casterId, aid),
             Float.toString(attackResult.getDamage()),
             Boolean.toString(attackResult.getIsCrit()),
-            Boolean.toString(attackResult.getElementDurabilityAttenuation() == 1),
+            getApply(attackResult.getElementDurabilityAttenuation()),
             getElementName(element.getValue()),
             getReaction(aid, mid, element, getRoot(attackerId)),
             AmplificationType.getTypeByValue(attackResult.getAmplifyReactionType()).toString(),
