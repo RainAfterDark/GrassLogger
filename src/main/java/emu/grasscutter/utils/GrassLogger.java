@@ -176,12 +176,6 @@ public class GrassLogger {
         }
     }
 
-    private static String getApply(float eda) {
-        if (eda == 1) return "true";
-        else if (eda == 0) return "false";
-        return Float.toString(eda);
-    }
-
     private static String getReaction(int aid, int mid, ElementType element, String attacker) {
         if (element == ElementType.Grass) {
             if (aid == 2) {
@@ -273,7 +267,7 @@ public class GrassLogger {
             getAttacker(attackerId, casterId, aid),
             Float.toString(attackResult.getDamage()),
             Boolean.toString(attackResult.getIsCrit()),
-            getApply(attackResult.getElementDurabilityAttenuation()),
+            Float.toString(attackResult.getElementDurabilityAttenuation()),
             getElementName(element.getValue()),
             getReaction(aid, mid, element, getRoot(attackerId)),
             AmplificationType.getTypeByValue(attackResult.getAmplifyReactionType()).toString(),
