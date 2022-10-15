@@ -791,7 +791,7 @@ public class InventorySystem extends BaseGameSystem {
 
         // Use
         var actions = itemData.getItemUseActions();
-        Grasscutter.getLogger().info("Using - actions - {}", actions);
+        //Grasscutter.getLogger().info("Using - actions - {}", actions);
         if (actions == null) return true;  // Maybe returning false would be more appropriate?
         return actions.stream()
                 .map(use -> use.useItem(params))
