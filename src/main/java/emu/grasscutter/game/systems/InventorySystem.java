@@ -36,6 +36,7 @@ import emu.grasscutter.server.game.BaseGameSystem;
 import emu.grasscutter.server.game.GameServer;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.Utils;
+import it.unimi.dsi.fastutil.ints.Int2FloatArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -634,7 +635,7 @@ public class InventorySystem extends BaseGameSystem {
         Map<Integer, Float> oldPropMap = avatar.getFightProperties();
         if (oldLevel != level) {
             // Deep copy if level has changed
-            oldPropMap = avatar.getFightProperties().int2FloatEntrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            oldPropMap = new Int2FloatArrayMap(avatar.getFightProperties());
         }
 
         // Done
@@ -696,7 +697,8 @@ public class InventorySystem extends BaseGameSystem {
 
     public void destroyMaterial(Player player, List<MaterialInfo> list) {
         // Return materials
-        Int2IntOpenHashMap returnMaterialMap = new Int2IntOpenHashMap();
+        val returnMaterialMap = new Int2IntOpenHashMap();
+        val inventory = player.getInventory();
 
         for (MaterialInfo info : list) {
             // Sanity check
@@ -704,28 +706,27 @@ public class InventorySystem extends BaseGameSystem {
                 continue;
             }
 
-            GameItem item = player.getInventory().getItemByGuid(info.getGuid());
+            GameItem item = inventory.getItemByGuid(info.getGuid());
             if (item == null || !item.isDestroyable()) {
                 continue;
             }
 
             // Remove
             int removeAmount = Math.min(info.getCount(), item.getCount());
-            player.getInventory().removeItem(item, removeAmount);
+            inventory.removeItem(item, removeAmount);
 
             // Delete material return items
-            if (item.getItemData().getDestroyReturnMaterial().length > 0) {
-                for (int i = 0; i < item.getItemData().getDestroyReturnMaterial().length; i++) {
-                    returnMaterialMap.addTo(item.getItemData().getDestroyReturnMaterial()[i], item.getItemData().getDestroyReturnMaterialCount()[i]);
+            val data = item.getItemData();
+            if (data.getDestroyReturnMaterial().length > 0) {
+                for (int i = 0; i < data.getDestroyReturnMaterial().length; i++) {
+                    returnMaterialMap.addTo(data.getDestroyReturnMaterial()[i], data.getDestroyReturnMaterialCount()[i]);
                 }
             }
         }
 
         // Give back items
         if (returnMaterialMap.size() > 0) {
-            for (Int2IntMap.Entry e : returnMaterialMap.int2IntEntrySet()) {
-                player.getInventory().addItem(new GameItem(e.getIntKey(), e.getIntValue()));
-            }
+            returnMaterialMap.forEach((id, count) -> inventory.addItem(new GameItem(id, count)));
         }
 
         // Packets
@@ -734,7 +735,7 @@ public class InventorySystem extends BaseGameSystem {
 
     // Uses an item from the player's inventory.
     public synchronized GameItem useItem(Player player, long targetGuid, long itemGuid, int count, int optionId, boolean isEnterMpDungeonTeam) {
-        Grasscutter.getLogger().info("Attempting to use item from inventory");
+        Grasscutter.getLogger().debug("Attempting to use item from inventory");
         Avatar target = player.getAvatars().getAvatarByGuid(targetGuid);
         GameItem item = player.getInventory().getItemByGuid(itemGuid);
         if (item == null) return null;
@@ -748,10 +749,10 @@ public class InventorySystem extends BaseGameSystem {
             var actions = itemData.getItemUseActions();
             if (actions != null)
                 actions.forEach(use -> use.postUseItem(params));
-            Grasscutter.getLogger().info("Item use succeeded!");
+            Grasscutter.getLogger().debug("Item use succeeded!");
             return item;
         } else {
-            Grasscutter.getLogger().info("Item use failed!");
+            Grasscutter.getLogger().debug("Item use failed!");
             return null;
         }
     }
@@ -791,7 +792,7 @@ public class InventorySystem extends BaseGameSystem {
 
         // Use
         var actions = itemData.getItemUseActions();
-        //Grasscutter.getLogger().info("Using - actions - {}", actions);
+        Grasscutter.getLogger().debug("Using - actions - {}", actions);
         if (actions == null) return true;  // Maybe returning false would be more appropriate?
         return actions.stream()
                 .map(use -> use.useItem(params))
