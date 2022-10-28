@@ -750,14 +750,16 @@ public class Avatar {
         if (level < 0 || level > 15) return false;
         var validLevels = GameData.getAvatarSkillLevels(skillId);
         if (validLevels != null && !validLevels.contains(level)) return false;
-
         int oldLevel = this.skillLevelMap.getOrDefault(skillId, 0);  // just taking the return value of put would have null concerns
         this.skillLevelMap.put(skillId, level);
         this.save();
 
         // Packet
-        this.getPlayer().sendPacket(new PacketAvatarSkillChangeNotify(this, skillId, oldLevel, level));
-        this.getPlayer().sendPacket(new PacketAvatarSkillUpgradeRsp(this, skillId, oldLevel, level));
+        val player = this.getPlayer();
+        if (player != null) {
+            player.sendPacket(new PacketAvatarSkillChangeNotify(this, skillId, oldLevel, level));
+            player.sendPacket(new PacketAvatarSkillUpgradeRsp(this, skillId, oldLevel, level));
+        }
         return true;
     }
 
@@ -807,12 +809,14 @@ public class Avatar {
         if (level < 0) {  // Special case for resetConst to remove inactive depots too
             this.talentIdList.clear();
             this.recalcStats();
+            this.save();
             return;
         }
         this.talentIdList.removeAll(this.getTalentIdList());  // Only remove constellations from active depot
         for (int i = 0; i < level; i++)
             this.unlockConstellation(true);
         this.recalcStats();
+        this.save();
     }
 
     public boolean sendSkillExtraChargeMap() {
