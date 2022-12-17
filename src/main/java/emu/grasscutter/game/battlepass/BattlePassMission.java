@@ -65,9 +65,9 @@ public class BattlePassMission {
 			.setMissionId(getId())
 			.setCurProgress(getProgress())
 			.setTotalProgress(getData().getProgress())
-			.setRewardBattlePassPoint(getData().getAddPoint())
-			.setMissionStatus(getStatus().getMissionStatus())
-			.setMissionType(getData().getRefreshType() == null ? 0 : getData().getRefreshType().getValue());
+			//.setRewardBattlePassPoint(getData().getAddPoint())
+			.setMissionStatus(getStatus().getMissionStatus());
+			//.setMissionType(getData().getRefreshType() == null ? 0 : getData().getRefreshType().getValue());
 		
 		return protoBuilder.build();
 	}

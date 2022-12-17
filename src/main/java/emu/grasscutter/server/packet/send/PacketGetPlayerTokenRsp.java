@@ -18,8 +18,8 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
         GetPlayerTokenRsp p = GetPlayerTokenRsp.newBuilder()
             .setUid(session.getPlayer().getUid())
             .setToken(session.getAccount().getToken())
-            .setAccountType(1)
-            .setIsProficientPlayer(session.getPlayer().getAvatars().getAvatarCount() > 0) // Not sure where this goes
+            .setUnk3300DILMOPPLPEM(1)
+            .setUnk3300AJBBIPFMBEL(session.getPlayer().getAvatars().getAvatarCount() > 0) // Not sure where this goes
             .setSecretKeySeed(Crypto.ENCRYPT_SEED)
             .setSecurityCmdBuffer(ByteString.copyFrom(Crypto.ENCRYPT_SEED_BUFFER))
             .setPlatformType(3)
@@ -40,10 +40,10 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
 
         GetPlayerTokenRsp p = GetPlayerTokenRsp.newBuilder()
             .setUid(session.getPlayer().getUid())
-            .setIsProficientPlayer(session.getPlayer().getAvatars().getAvatarCount() > 0)
+            .setUnk3300AJBBIPFMBEL(session.getPlayer().getAvatars().getAvatarCount() > 0)
             .setRetcode(retcode)
             .setMsg(msg)
-            .setBlackUidEndTime(blackEndTime)
+            .setUnk3300DILMOPPLPEM(blackEndTime)
             .setRegPlatform(3)
             .setCountryCode("US")
             .setClientIpStr(session.getAddress().getAddress().getHostAddress())
@@ -60,8 +60,8 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
         GetPlayerTokenRsp p = GetPlayerTokenRsp.newBuilder()
             .setUid(session.getPlayer().getUid())
             .setToken(session.getAccount().getToken())
-            .setAccountType(1)
-            .setIsProficientPlayer(session.getPlayer().getAvatars().getAvatarCount() > 0) // Not sure where this goes
+            .setUnk3300DILMOPPLPEM(1)
+            .setUnk3300AJBBIPFMBEL(session.getPlayer().getAvatars().getAvatarCount() > 0) // Not sure where this goes
             .setSecretKeySeed(Crypto.ENCRYPT_SEED)
             .setSecurityCmdBuffer(ByteString.copyFrom(Crypto.ENCRYPT_SEED_BUFFER))
             .setPlatformType(3)
@@ -70,8 +70,8 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
             .setClientVersionRandomKey("c25-314dd05b0b5f")
             .setRegPlatform(3)
             .setClientIpStr(session.getAddress().getAddress().getHostAddress())
-            .setEncryptedSeed(encryptedSeed)
-            .setSeedSignature(encryptedSeedSign)
+            .setServerRandKey(encryptedSeed)
+            .setSign(encryptedSeedSign)
             .build();
 
         this.setData(p.toByteArray());

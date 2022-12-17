@@ -17,7 +17,7 @@ public class PacketDoGachaRsp extends BasePacket {
 	public PacketDoGachaRsp(GachaBanner banner, List<GachaItem> list, PlayerGachaBannerInfo gachaInfo) {
 		super(PacketOpcodes.DoGachaRsp);
 
-		ItemParamData costItem = banner.getCost(1);
+		/*ItemParamData costItem = banner.getCost(1);
 		ItemParamData costItem10 = banner.getCost(10);
 		int gachaTimesLimit = banner.getGachaTimesLimit();
 		int leftGachaTimes = switch(gachaTimesLimit) {
@@ -43,7 +43,7 @@ public class PacketDoGachaRsp extends BasePacket {
 				.setWishMaxProgress(banner.getWishMaxProgress());
 		}
 		
-		this.setData(rsp.build());
+		this.setData(rsp.build());*/
 	}
 
 	public PacketDoGachaRsp() {

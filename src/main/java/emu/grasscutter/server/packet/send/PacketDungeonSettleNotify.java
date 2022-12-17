@@ -37,7 +37,7 @@ public class PacketDungeonSettleNotify extends BasePacket {
 
 		var towerLevelEndNotify = TowerLevelEndNotify.newBuilder()
 				.setIsSuccess(challenge.isSuccess())
-				.setContinueState(continueStatus)
+				//.setContinueState(continueStatus)
 				.addFinishedStarCondList(1)
 				.addFinishedStarCondList(2)
 				.addFinishedStarCondList(3)
@@ -47,7 +47,7 @@ public class PacketDungeonSettleNotify extends BasePacket {
 						.build())
 				;
 		if(nextFloorId > 0 && canJump){
-			towerLevelEndNotify.setNextFloorId(nextFloorId);
+			//towerLevelEndNotify.setNextFloorId(nextFloorId);
 		}
 
 		DungeonSettleNotify proto = DungeonSettleNotify.newBuilder()

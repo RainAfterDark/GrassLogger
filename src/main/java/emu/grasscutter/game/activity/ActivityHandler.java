@@ -75,8 +75,8 @@ public abstract class ActivityHandler {
             .setScheduleId(activityConfigItem.getScheduleId())
             .setBeginTime(DateHelper.getUnixTime(activityConfigItem.getBeginTime()))
             .setFirstDayStartTime(DateHelper.getUnixTime(activityConfigItem.getBeginTime()))
-            .setEndTime(DateHelper.getUnixTime(activityConfigItem.getEndTime()))
-            .addAllMeetCondList(activityConfigItem.getMeetCondList());
+            .setEndTime(DateHelper.getUnixTime(activityConfigItem.getEndTime()));
+            //.addAllMeetCondList(activityConfigItem.getMeetCondList());
 
         if (playerActivityData != null){
             proto.addAllWatcherInfoList(playerActivityData.getAllWatcherInfoList());

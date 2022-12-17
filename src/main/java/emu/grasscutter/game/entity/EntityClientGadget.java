@@ -46,7 +46,7 @@ public class EntityClientGadget extends EntityBaseGadget {
         this.campType = notify.getCampType();
         this.ownerEntityId = notify.getPropOwnerEntityId();
         this.targetEntityId = notify.getTargetEntityId();
-        this.asyncLoad = notify.getIsAsyncLoad();
+        //this.asyncLoad = notify.getIsAsyncLoad();
 
         GameEntity owner = scene.getEntityById(this.ownerEntityId);
         if (owner instanceof EntityClientGadget ownerGadget) {
@@ -55,6 +55,8 @@ public class EntityClientGadget extends EntityBaseGadget {
         else {
             this.originalOwnerEntityId = this.ownerEntityId;
         }
+
+        GrassLogger.registerGadget(this);
     }
 
     @Override

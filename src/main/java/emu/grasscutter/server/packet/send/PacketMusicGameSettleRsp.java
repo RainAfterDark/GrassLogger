@@ -12,7 +12,7 @@ public class PacketMusicGameSettleRsp extends BasePacket {
         var proto = MusicGameSettleRspOuterClass.MusicGameSettleRsp.newBuilder();
 
         proto.setMusicBasicId(musicBasicId)
-            .setMusicShareId(musicShareId)
+            //.setMusicShareId(musicShareId)
             .setIsNewRecord(isNewRecord);
 
         this.setData(proto);

@@ -70,7 +70,7 @@ public class CookingManager extends BasePlayerManager {
 
     public void handlePlayerCookReq(PlayerCookReq req) {
         // Get info from the request.
-        int recipeId = req.getRecipeId();
+        /*int recipeId = req.getRecipeId();
         int quality = req.getQteQuality();
         int count = req.getCookCount();
         int avatar = req.getAssistAvatar();
@@ -136,7 +136,7 @@ public class CookingManager extends BasePlayerManager {
         }
 
         // Send response.
-        this.player.sendPacket(new PacketPlayerCookRsp(cookResults, quality, count, recipeId, proficiency));
+        this.player.sendPacket(new PacketPlayerCookRsp(cookResults, quality, count, recipeId, proficiency));*/
     }
 
     /********************

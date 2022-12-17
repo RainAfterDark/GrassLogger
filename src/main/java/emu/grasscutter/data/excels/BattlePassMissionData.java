@@ -60,9 +60,9 @@ public class BattlePassMissionData extends GameResource {
         protoBuilder
             .setMissionId(getId())
             .setTotalProgress(this.getProgress())
-            .setRewardBattlePassPoint(this.getAddPoint())
-            .setMissionStatus(MissionStatus.MISSION_STATUS_UNFINISHED)
-            .setMissionType(this.getRefreshType() == null ? 0 : this.getRefreshType().getValue());
+            //.setRewardBattlePassPoint(this.getAddPoint())
+            .setMissionStatus(MissionStatus.MISSION_STATUS_UNFINISHED);
+            //.setMissionType(this.getRefreshType() == null ? 0 : this.getRefreshType().getValue());
 
         return protoBuilder.build();
     }

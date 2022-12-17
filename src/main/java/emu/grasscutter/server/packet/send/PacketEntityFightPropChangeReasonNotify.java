@@ -64,7 +64,7 @@ public class PacketEntityFightPropChangeReasonNotify extends BasePacket {
                 .setEntityId(entity.getId())
                 .setPropType(prop.getId())
                 .setPropDelta(value)
-                .setChangeEnergyReson(reason)
+                .setChangeEnergyReason(reason)
                 .build();
         
         this.setData(proto);

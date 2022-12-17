@@ -29,9 +29,9 @@ public class PacketPlayerCookRsp extends BasePacket {
                 CookRecipeData.newBuilder()
                     .setRecipeId(recipeId)
                     .setProficiency(proficiency)    
-            )
-            .setQteQuality(quality)
-            .setCookCount(count);
+            );
+            //.setQteQuality(quality)
+            //.setCookCount(count);
 
         for (var item : output) {
             proto.addItemList(

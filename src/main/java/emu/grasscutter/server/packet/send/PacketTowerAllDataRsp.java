@@ -40,11 +40,11 @@ public class PacketTowerAllDataRsp extends BasePacket {
                 .setTowerScheduleId(towerScheduleManager.getCurrentTowerScheduleData().getScheduleId())
                 .addAllTowerFloorRecordList(recordList)
                 .setCurLevelRecord(TowerCurLevelRecord.newBuilder().setIsEmpty(true))
-                .setScheduleStartTime(DateHelper.getUnixTime(towerScheduleManager.getTowerScheduleConfig()
-                        .getScheduleStartTime()))
-                .setNextScheduleChangeTime(DateHelper.getUnixTime(towerScheduleManager.getTowerScheduleConfig()
-                        .getNextScheduleChangeTime()))
-                .putAllFloorOpenTimeMap(openTimeMap)
+                //.setScheduleStartTime(DateHelper.getUnixTime(towerScheduleManager.getTowerScheduleConfig()
+                        //.getScheduleStartTime()))
+                //.setNextScheduleChangeTime(DateHelper.getUnixTime(towerScheduleManager.getTowerScheduleConfig()
+                        //.getNextScheduleChangeTime()))
+                //.putAllFloorOpenTimeMap(openTimeMap)
                 .setIsFinishedEntranceFloor(towerManager.canEnterScheduleFloor())
                 .build();
 
