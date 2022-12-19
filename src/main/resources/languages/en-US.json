@@ -167,6 +167,9 @@
     "dmgswitch": {
       "description": "Toggles damage to enemies (logger unaffected)."
     },
+    "kaze": {
+      "description": "Gain a 'blessing' from the Anemo Archon."
+    },
     "heal": {
       "success": "All characters have been healed.",
       "description": "Heal all characters in your current team."

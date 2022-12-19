@@ -15,8 +15,6 @@ import emu.grasscutter.net.proto.AbilityEmbryoOuterClass.AbilityEmbryo;
 import emu.grasscutter.net.proto.AttackResultOuterClass.AttackResult;
 
 import it.unimi.dsi.fastutil.ints.*;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
@@ -55,7 +53,7 @@ public class GrassLogger {
     private static final Int2IntMap gadgetOwnerMap = new Int2IntOpenHashMap();
     private static final Int2IntMap gadgetIdMap = new Int2IntOpenHashMap();
     
-    private static final Long2ObjectMap<MonsterAffix> monsterAffixMap = new Long2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<MonsterAffix> monsterAffixMap = new Int2ObjectOpenHashMap<>();
     private static final Int2ObjectMap<String> monsterNameMap = new Int2ObjectOpenHashMap<>();
 
     private static final Logger grassLogger = (Logger) LoggerFactory.getLogger(GrassLogger.class);
@@ -101,14 +99,14 @@ public class GrassLogger {
         }
     }
 
-    private static String getMonsterAffix(long hash) {
+    private static String getMonsterAffix(int id) {
         MonsterAffix affix;
-        if (monsterAffixMap.containsKey(hash)) {
-            affix = monsterAffixMap.get(hash);
+        if (monsterAffixMap.containsKey(id)) {
+            affix = monsterAffixMap.get(id);
             affix.count++;
         } else {
             affix = new MonsterAffix();
-            monsterAffixMap.put(hash, affix);
+            monsterAffixMap.put(id, affix);
         }
         return affix.letter + affix.count;
     }
@@ -236,9 +234,8 @@ public class GrassLogger {
         String affix, name;
         MonsterData monsterData = monster.getMonsterData();
         if (monsterData != null) {
-            long hash = monsterData.getDescribeData().getNameTextMapHash();
-            affix = getMonsterAffix(hash);
-            name = monsterData.getMonsterName(); //preferably this should take from the name hash, but fuck TextMaps
+            affix = getMonsterAffix(monsterData.getId());
+            name = monsterData.getMonsterName();
         } else {
             affix = getMonsterAffix(-1);
             name = "Unknown";

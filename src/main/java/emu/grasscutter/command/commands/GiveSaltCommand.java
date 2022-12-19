@@ -1,30 +1,22 @@
 package emu.grasscutter.command.commands;
 
-import emu.grasscutter.GameConstants;
 import emu.grasscutter.command.Command;
 import emu.grasscutter.command.CommandHandler;
 import emu.grasscutter.data.GameData;
-import emu.grasscutter.data.GameDepot;
 import emu.grasscutter.data.excels.AvatarData;
 import emu.grasscutter.data.excels.ItemData;
-import emu.grasscutter.data.excels.ReliquaryAffixData;
-import emu.grasscutter.data.excels.ReliquaryMainPropData;
 import emu.grasscutter.game.avatar.Avatar;
 import emu.grasscutter.game.inventory.GameItem;
 import emu.grasscutter.game.inventory.ItemType;
 import emu.grasscutter.game.player.Player;
-import emu.grasscutter.game.props.ActionReason;
-import emu.grasscutter.game.props.FightProperty;
 import emu.grasscutter.utils.SparseSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Command(
     label = "givesalt",
+    aliases = {"gs"},
     usage = {""},
     permission = "player.give",
     permissionTargeted = "player.give.others",
@@ -68,6 +60,7 @@ public final class GiveSaltCommand implements CommandHandler {
             }
         }
         addItemsChunked(sender, itemList, 100);
+        CommandHandler.sendMessage(sender, "Salt given. Enjoy.");
     }
 
     private static Avatar makeAvatar(AvatarData avatarData, int level, int promoteLevel, int constellation) {
