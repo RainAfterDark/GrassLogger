@@ -55,6 +55,8 @@ public class EntityClientGadget extends EntityBaseGadget {
         else {
             this.originalOwnerEntityId = this.ownerEntityId;
         }
+
+        GrassLogger.registerGadget(this);
     }
 
     @Override

@@ -111,9 +111,9 @@ public class GameSession implements GameSessionManager.KcpChannel {
 
         // DO NOT REMOVE (unless we find a way to validate code before sending to client which I don't think we can)
         // Stop WindSeedClientNotify from being sent for security purposes.
-        if (PacketOpcodesUtils.BANNED_PACKETS.contains(packet.getOpcode())) {
-            return;
-        }
+        /*if (PacketOpcodesUtils.BANNED_PACKETS.contains(packet.getOpcode())) {
+            return; // ehe
+        }*/
 
         // Header
         if (packet.shouldBuildHeader()) {

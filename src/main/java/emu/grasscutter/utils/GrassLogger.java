@@ -15,8 +15,6 @@ import emu.grasscutter.net.proto.AbilityEmbryoOuterClass.AbilityEmbryo;
 import emu.grasscutter.net.proto.AttackResultOuterClass.AttackResult;
 
 import it.unimi.dsi.fastutil.ints.*;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
@@ -26,16 +24,39 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class GrassLogger {
-    private static final Logger log = (Logger) LoggerFactory.getLogger(GrassLogger.class);
+    private static final List<String> hyperbloomExceptions = List.of("Collei", "Alhatham");
+    private static final Map<AbilityReaction, ElementType> reactionElements = Map.of(
+        AbilityReaction.Burning, ElementType.Fire,
+        AbilityReaction.Overload, ElementType.Fire,
+        AbilityReaction.ElectroCharged, ElementType.Electric,
+        AbilityReaction.Superconduct, ElementType.Ice,
+        AbilityReaction.Shatter, ElementType.None,
+        AbilityReaction.Burgeon, ElementType.Grass,
+        AbilityReaction.SwirlPyro, ElementType.Fire,
+        AbilityReaction.SwirlHydro, ElementType.Water,
+        AbilityReaction.SwirlElectro, ElementType.Electric,
+        AbilityReaction.SwirlCryo, ElementType.Ice
+    );
+    private static final String[] elementNames = {
+        "Physical", "Pyro", "Hydro", "Dendro", "Electro", "Cryo",
+        "Frozen", "Anemo", "Geo", "AntiFire", "VehicleMuteIce",
+        "Mushroom", "Overdose", "Wood", "COUNT"
+    };
+    
     private static int uidCount = 0;
     private static long lastTime = 0;
+
     private static final Int2ObjectMap<String> avatarNameMap = new Int2ObjectLinkedOpenHashMap<>();
     private static final Map<String, AbilityControlBlock> abilityMap = new HashMap<>();
     private static final Int2IntMap reactionMap = new Int2IntOpenHashMap();
+
     private static final Int2IntMap gadgetOwnerMap = new Int2IntOpenHashMap();
     private static final Int2IntMap gadgetIdMap = new Int2IntOpenHashMap();
-    private static final Long2ObjectMap<MonsterAffix> monsterAffixMap = new Long2ObjectOpenHashMap<>();
+    
+    private static final Int2ObjectMap<MonsterAffix> monsterAffixMap = new Int2ObjectOpenHashMap<>();
     private static final Int2ObjectMap<String> monsterNameMap = new Int2ObjectOpenHashMap<>();
+
+    private static final Logger grassLogger = (Logger) LoggerFactory.getLogger(GrassLogger.class);
 
     private static String getUID() {
         return Integer.toString(++uidCount);
@@ -49,11 +70,6 @@ public class GrassLogger {
     }
 
     private static String getElementName(int elementId) {
-        String[] elementNames = {
-            "Physical", "Pyro", "Hydro", "Dendro", "Electro", "Cryo",
-            "Frozen", "Anemo", "Geo", "AntiFire", "VehicleMuteIce",
-            "Mushroom", "Overdose", "Wood", "COUNT"
-        };
         if (elementId == 255) return "Default";
         return elementNames[elementId];
     }
@@ -83,14 +99,14 @@ public class GrassLogger {
         }
     }
 
-    private static String getMonsterAffix(long hash) {
+    private static String getMonsterAffix(int id) {
         MonsterAffix affix;
-        if (monsterAffixMap.containsKey(hash)) {
-            affix = monsterAffixMap.get(hash);
+        if (monsterAffixMap.containsKey(id)) {
+            affix = monsterAffixMap.get(id);
             affix.count++;
         } else {
             affix = new MonsterAffix();
-            monsterAffixMap.put(hash, affix);
+            monsterAffixMap.put(id, affix);
         }
         return affix.letter + affix.count;
     }
@@ -181,28 +197,15 @@ public class GrassLogger {
             if (aid == 2) {
                 if (mid == 5) return "Bloom";
                 else if (mid == 4) return "BountifulBloom";
-            } else if (aid == 1 && mid == 2 &&
-                !Objects.equals(attacker, "Collei")) {
-                return "Hyperbloom";
+            } else if (aid == 1 && mid == 2) {
+                if (!hyperbloomExceptions.contains(attacker))
+                    return "Hyperbloom";
             }
         }
 
         AbilityReaction reaction = AbilityReaction.getTypeByValue(aid);
-        if (reaction != null) {
-            if ((reaction == AbilityReaction.Burning && element != ElementType.Fire) ||
-                (reaction == AbilityReaction.Overload && element != ElementType.Fire) ||
-                (reaction == AbilityReaction.ElectroCharged && element != ElementType.Electric) ||
-                (reaction == AbilityReaction.Superconduct && element != ElementType.Ice) ||
-                (reaction == AbilityReaction.Shatter && element != ElementType.None) ||
-                (reaction == AbilityReaction.Burgeon && element != ElementType.Grass) ||
-                (reaction == AbilityReaction.SwirlPyro && element != ElementType.Fire) ||
-                (reaction == AbilityReaction.SwirlHydro && element != ElementType.Water) ||
-                (reaction == AbilityReaction.SwirlElectro && element != ElementType.Electric) ||
-                (reaction == AbilityReaction.SwirlCryo && element != ElementType.Ice)) {
-                return "None";
-            }
+        if (reaction != null && element == reactionElements.get(reaction)) 
             return reaction.toString();
-        }
         return "None";
     }
 
@@ -231,9 +234,8 @@ public class GrassLogger {
         String affix, name;
         MonsterData monsterData = monster.getMonsterData();
         if (monsterData != null) {
-            long hash = monsterData.getDescribeData().getNameTextMapHash();
-            affix = getMonsterAffix(hash);
-            name = monsterData.getMonsterName(); //preferably this should take from the name hash, but fuck TextMaps
+            affix = getMonsterAffix(monsterData.getId());
+            name = monsterData.getMonsterName();
         } else {
             affix = getMonsterAffix(-1);
             name = "Unknown";
@@ -262,7 +264,7 @@ public class GrassLogger {
         int mid = attackResult.getAbilityIdentifier().getInstancedModifierId();
         int defenseId = attackResult.getDefenseId();
 
-        List<String> attackData = Arrays.asList(
+        List<String> attackData = List.of(
             getSource(attackerId, casterId, element, aid, defenseId),
             getAttacker(attackerId, casterId, aid),
             Float.toString(attackResult.getDamage()),
@@ -281,11 +283,11 @@ public class GrassLogger {
     }
 
     public static void logSkillCast(int skillId, int casterId) {
-        List<String> skillCastData = Arrays.asList(
+        List<String> skillCastData = List.of(
             getSkillName(skillId),
             getRoot(casterId)
         );
-        log("SKILL", skillCastData);
+        //log("SKILL", skillCastData);
     }
 
     public static void logTeamUpdate() {
@@ -300,12 +302,12 @@ public class GrassLogger {
             .withZone(ZoneId.systemDefault());
         String time = formatter.format(now);
         String deltaTime = getDeltaTime(now.toEpochMilli());
-        List<String> append = Arrays.asList(type, getUID(), time, deltaTime);
+        List<String> append = List.of(type, getUID(), time, deltaTime);
         List<String> row = Stream.concat(append.stream(), dataList.stream()).toList();
         log(String.join(",", row));
     }
 
     public static void log(String text) {
-        log.info(text);
+        grassLogger.info(text);
     }
 }

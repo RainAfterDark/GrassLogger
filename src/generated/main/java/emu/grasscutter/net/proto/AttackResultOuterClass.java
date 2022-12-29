@@ -79,16 +79,24 @@ public final class AttackResultOuterClass {
     int getCriticalRand();
 
     /**
-     * <code>uint32 Unk3300_ABJJNNNKGBB = 1742;</code>
-     * @return The unk3300ABJJNNNKGBB.
+     * <pre>
+     * Unk3300_ABJJNNNKGBB
+     * </pre>
+     *
+     * <code>uint32 amplify_reaction_type = 1742;</code>
+     * @return The amplifyReactionType.
      */
-    int getUnk3300ABJJNNNKGBB();
+    int getAmplifyReactionType();
 
     /**
-     * <code>uint32 Unk3300_KPKAECBFABP = 2012;</code>
-     * @return The unk3300KPKAECBFABP.
+     * <pre>
+     * Unk3300_KPKAECBFABP
+     * </pre>
+     *
+     * <code>uint32 addhurt_reaction_type = 2012;</code>
+     * @return The addhurtReactionType.
      */
-    int getUnk3300KPKAECBFABP();
+    int getAddhurtReactionType();
 
     /**
      * <code>.AttackHitEffectResult hit_eff_result = 8;</code>
@@ -441,7 +449,7 @@ public final class AttackResultOuterClass {
             }
             case 13936: {
 
-              unk3300ABJJNNNKGBB_ = input.readUInt32();
+              amplifyReactionType_ = input.readUInt32();
               break;
             }
             case 14256: {
@@ -466,7 +474,7 @@ public final class AttackResultOuterClass {
             }
             case 16096: {
 
-              unk3300KPKAECBFABP_ = input.readUInt32();
+              addhurtReactionType_ = input.readUInt32();
               break;
             }
             default: {
@@ -611,26 +619,34 @@ public final class AttackResultOuterClass {
       return criticalRand_;
     }
 
-    public static final int UNK3300_ABJJNNNKGBB_FIELD_NUMBER = 1742;
-    private int unk3300ABJJNNNKGBB_;
+    public static final int AMPLIFY_REACTION_TYPE_FIELD_NUMBER = 1742;
+    private int amplifyReactionType_;
     /**
-     * <code>uint32 Unk3300_ABJJNNNKGBB = 1742;</code>
-     * @return The unk3300ABJJNNNKGBB.
+     * <pre>
+     * Unk3300_ABJJNNNKGBB
+     * </pre>
+     *
+     * <code>uint32 amplify_reaction_type = 1742;</code>
+     * @return The amplifyReactionType.
      */
     @java.lang.Override
-    public int getUnk3300ABJJNNNKGBB() {
-      return unk3300ABJJNNNKGBB_;
+    public int getAmplifyReactionType() {
+      return amplifyReactionType_;
     }
 
-    public static final int UNK3300_KPKAECBFABP_FIELD_NUMBER = 2012;
-    private int unk3300KPKAECBFABP_;
+    public static final int ADDHURT_REACTION_TYPE_FIELD_NUMBER = 2012;
+    private int addhurtReactionType_;
     /**
-     * <code>uint32 Unk3300_KPKAECBFABP = 2012;</code>
-     * @return The unk3300KPKAECBFABP.
+     * <pre>
+     * Unk3300_KPKAECBFABP
+     * </pre>
+     *
+     * <code>uint32 addhurt_reaction_type = 2012;</code>
+     * @return The addhurtReactionType.
      */
     @java.lang.Override
-    public int getUnk3300KPKAECBFABP() {
-      return unk3300KPKAECBFABP_;
+    public int getAddhurtReactionType() {
+      return addhurtReactionType_;
     }
 
     public static final int HIT_EFF_RESULT_FIELD_NUMBER = 8;
@@ -1004,8 +1020,8 @@ public final class AttackResultOuterClass {
       if (attackCount_ != 0) {
         output.writeUInt32(1484, attackCount_);
       }
-      if (unk3300ABJJNNNKGBB_ != 0) {
-        output.writeUInt32(1742, unk3300ABJJNNNKGBB_);
+      if (amplifyReactionType_ != 0) {
+        output.writeUInt32(1742, amplifyReactionType_);
       }
       if (attackTimestampMs_ != 0) {
         output.writeUInt32(1782, attackTimestampMs_);
@@ -1019,8 +1035,8 @@ public final class AttackResultOuterClass {
       if (damageShield_ != 0F) {
         output.writeFloat(1932, damageShield_);
       }
-      if (unk3300KPKAECBFABP_ != 0) {
-        output.writeUInt32(2012, unk3300KPKAECBFABP_);
+      if (addhurtReactionType_ != 0) {
+        output.writeUInt32(2012, addhurtReactionType_);
       }
       unknownFields.writeTo(output);
     }
@@ -1126,9 +1142,9 @@ public final class AttackResultOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(1484, attackCount_);
       }
-      if (unk3300ABJJNNNKGBB_ != 0) {
+      if (amplifyReactionType_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1742, unk3300ABJJNNNKGBB_);
+          .computeUInt32Size(1742, amplifyReactionType_);
       }
       if (attackTimestampMs_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -1146,9 +1162,9 @@ public final class AttackResultOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeFloatSize(1932, damageShield_);
       }
-      if (unk3300KPKAECBFABP_ != 0) {
+      if (addhurtReactionType_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2012, unk3300KPKAECBFABP_);
+          .computeUInt32Size(2012, addhurtReactionType_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1187,10 +1203,10 @@ public final class AttackResultOuterClass {
           != other.getHashedAnimEventId()) return false;
       if (getCriticalRand()
           != other.getCriticalRand()) return false;
-      if (getUnk3300ABJJNNNKGBB()
-          != other.getUnk3300ABJJNNNKGBB()) return false;
-      if (getUnk3300KPKAECBFABP()
-          != other.getUnk3300KPKAECBFABP()) return false;
+      if (getAmplifyReactionType()
+          != other.getAmplifyReactionType()) return false;
+      if (getAddhurtReactionType()
+          != other.getAddhurtReactionType()) return false;
       if (hasHitEffResult() != other.hasHitEffResult()) return false;
       if (hasHitEffResult()) {
         if (!getHitEffResult()
@@ -1276,10 +1292,10 @@ public final class AttackResultOuterClass {
       hash = (53 * hash) + getHashedAnimEventId();
       hash = (37 * hash) + CRITICAL_RAND_FIELD_NUMBER;
       hash = (53 * hash) + getCriticalRand();
-      hash = (37 * hash) + UNK3300_ABJJNNNKGBB_FIELD_NUMBER;
-      hash = (53 * hash) + getUnk3300ABJJNNNKGBB();
-      hash = (37 * hash) + UNK3300_KPKAECBFABP_FIELD_NUMBER;
-      hash = (53 * hash) + getUnk3300KPKAECBFABP();
+      hash = (37 * hash) + AMPLIFY_REACTION_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + getAmplifyReactionType();
+      hash = (37 * hash) + ADDHURT_REACTION_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + getAddhurtReactionType();
       if (hasHitEffResult()) {
         hash = (37 * hash) + HIT_EFF_RESULT_FIELD_NUMBER;
         hash = (53 * hash) + getHitEffResult().hashCode();
@@ -1483,9 +1499,9 @@ public final class AttackResultOuterClass {
 
         criticalRand_ = 0;
 
-        unk3300ABJJNNNKGBB_ = 0;
+        amplifyReactionType_ = 0;
 
-        unk3300KPKAECBFABP_ = 0;
+        addhurtReactionType_ = 0;
 
         if (hitEffResultBuilder_ == null) {
           hitEffResult_ = null;
@@ -1575,8 +1591,8 @@ public final class AttackResultOuterClass {
         result.damage_ = damage_;
         result.hashedAnimEventId_ = hashedAnimEventId_;
         result.criticalRand_ = criticalRand_;
-        result.unk3300ABJJNNNKGBB_ = unk3300ABJJNNNKGBB_;
-        result.unk3300KPKAECBFABP_ = unk3300KPKAECBFABP_;
+        result.amplifyReactionType_ = amplifyReactionType_;
+        result.addhurtReactionType_ = addhurtReactionType_;
         if (hitEffResultBuilder_ == null) {
           result.hitEffResult_ = hitEffResult_;
         } else {
@@ -1689,11 +1705,11 @@ public final class AttackResultOuterClass {
         if (other.getCriticalRand() != 0) {
           setCriticalRand(other.getCriticalRand());
         }
-        if (other.getUnk3300ABJJNNNKGBB() != 0) {
-          setUnk3300ABJJNNNKGBB(other.getUnk3300ABJJNNNKGBB());
+        if (other.getAmplifyReactionType() != 0) {
+          setAmplifyReactionType(other.getAmplifyReactionType());
         }
-        if (other.getUnk3300KPKAECBFABP() != 0) {
-          setUnk3300KPKAECBFABP(other.getUnk3300KPKAECBFABP());
+        if (other.getAddhurtReactionType() != 0) {
+          setAddhurtReactionType(other.getAddhurtReactionType());
         }
         if (other.hasHitEffResult()) {
           mergeHitEffResult(other.getHitEffResult());
@@ -2089,64 +2105,88 @@ public final class AttackResultOuterClass {
         return this;
       }
 
-      private int unk3300ABJJNNNKGBB_ ;
+      private int amplifyReactionType_ ;
       /**
-       * <code>uint32 Unk3300_ABJJNNNKGBB = 1742;</code>
-       * @return The unk3300ABJJNNNKGBB.
+       * <pre>
+       * Unk3300_ABJJNNNKGBB
+       * </pre>
+       *
+       * <code>uint32 amplify_reaction_type = 1742;</code>
+       * @return The amplifyReactionType.
        */
       @java.lang.Override
-      public int getUnk3300ABJJNNNKGBB() {
-        return unk3300ABJJNNNKGBB_;
+      public int getAmplifyReactionType() {
+        return amplifyReactionType_;
       }
       /**
-       * <code>uint32 Unk3300_ABJJNNNKGBB = 1742;</code>
-       * @param value The unk3300ABJJNNNKGBB to set.
+       * <pre>
+       * Unk3300_ABJJNNNKGBB
+       * </pre>
+       *
+       * <code>uint32 amplify_reaction_type = 1742;</code>
+       * @param value The amplifyReactionType to set.
        * @return This builder for chaining.
        */
-      public Builder setUnk3300ABJJNNNKGBB(int value) {
+      public Builder setAmplifyReactionType(int value) {
         
-        unk3300ABJJNNNKGBB_ = value;
+        amplifyReactionType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint32 Unk3300_ABJJNNNKGBB = 1742;</code>
+       * <pre>
+       * Unk3300_ABJJNNNKGBB
+       * </pre>
+       *
+       * <code>uint32 amplify_reaction_type = 1742;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUnk3300ABJJNNNKGBB() {
+      public Builder clearAmplifyReactionType() {
         
-        unk3300ABJJNNNKGBB_ = 0;
+        amplifyReactionType_ = 0;
         onChanged();
         return this;
       }
 
-      private int unk3300KPKAECBFABP_ ;
+      private int addhurtReactionType_ ;
       /**
-       * <code>uint32 Unk3300_KPKAECBFABP = 2012;</code>
-       * @return The unk3300KPKAECBFABP.
+       * <pre>
+       * Unk3300_KPKAECBFABP
+       * </pre>
+       *
+       * <code>uint32 addhurt_reaction_type = 2012;</code>
+       * @return The addhurtReactionType.
        */
       @java.lang.Override
-      public int getUnk3300KPKAECBFABP() {
-        return unk3300KPKAECBFABP_;
+      public int getAddhurtReactionType() {
+        return addhurtReactionType_;
       }
       /**
-       * <code>uint32 Unk3300_KPKAECBFABP = 2012;</code>
-       * @param value The unk3300KPKAECBFABP to set.
+       * <pre>
+       * Unk3300_KPKAECBFABP
+       * </pre>
+       *
+       * <code>uint32 addhurt_reaction_type = 2012;</code>
+       * @param value The addhurtReactionType to set.
        * @return This builder for chaining.
        */
-      public Builder setUnk3300KPKAECBFABP(int value) {
+      public Builder setAddhurtReactionType(int value) {
         
-        unk3300KPKAECBFABP_ = value;
+        addhurtReactionType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint32 Unk3300_KPKAECBFABP = 2012;</code>
+       * <pre>
+       * Unk3300_KPKAECBFABP
+       * </pre>
+       *
+       * <code>uint32 addhurt_reaction_type = 2012;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUnk3300KPKAECBFABP() {
+      public Builder clearAddhurtReactionType() {
         
-        unk3300KPKAECBFABP_ = 0;
+        addhurtReactionType_ = 0;
         onChanged();
         return this;
       }
@@ -3174,30 +3214,30 @@ public final class AttackResultOuterClass {
     java.lang.String[] descriptorData = {
       "\n\022AttackResult.proto\032\027AbilityIdentifier." +
       "proto\032\033AttackHitEffectResult.proto\032\022HitC" +
-      "ollision.proto\032\014Vector.proto\"\333\006\n\014AttackR" +
+      "ollision.proto\032\014Vector.proto\"\337\006\n\014AttackR" +
       "esult\022\022\n\ndefense_id\030\002 \001(\r\022\023\n\013attacker_id" +
       "\030\001 \001(\r\022\024\n\013target_type\030\316\016 \001(\r\022\025\n\014endure_d" +
       "elta\030\243\006 \001(\002\022\034\n\023Unk3300_DOMAOPGPHMD\030\306\003 \001(" +
       "\010\022\024\n\014element_type\030\014 \001(\r\022\034\n\023Unk3300_BALCP" +
       "HMFIBC\030\236\013 \001(\r\022\016\n\006damage\030\n \001(\002\022\035\n\024hashed_" +
       "anim_event_id\030\333\010 \001(\r\022\026\n\rcritical_rand\030\205\005" +
-      " \001(\r\022\034\n\023Unk3300_ABJJNNNKGBB\030\316\r \001(\r\022\034\n\023Un" +
-      "k3300_KPKAECBFABP\030\334\017 \001(\r\022.\n\016hit_eff_resu" +
-      "lt\030\010 \001(\0132\026.AttackHitEffectResult\022\024\n\014endu" +
-      "re_break\030\016 \001(\r\022.\n\022ability_identifier\030\007 \001" +
-      "(\0132\022.AbilityIdentifier\022\024\n\014hit_pos_type\030\003" +
-      " \001(\r\022\034\n\023attack_timestamp_ms\030\366\r \001(\r\022\026\n\rda" +
-      "mage_shield\030\214\017 \001(\002\022\025\n\014attack_count\030\314\013 \001(" +
-      "\r\022\027\n\016is_resist_text\030\371\004 \001(\010\022 \n\030hit_retrea" +
-      "t_angle_compat\030\005 \001(\005\022$\n\rhit_collision\030\017 " +
-      "\001(\0132\r.HitCollision\022\034\n\023Unk3300_MGIMJGMIPL" +
-      "D\030\334\005 \001(\010\022\017\n\007is_crit\030\006 \001(\010\022\035\n\014resolved_di" +
-      "r\030\013 \001(\0132\007.Vector\022\034\n\024element_amplify_rate" +
-      "\030\034 \001(\002\022\025\n\ranim_event_id\030\004 \001(\t\022\034\n\023Unk3300" +
-      "_GBPJCELJKJA\030\264\016 \001(\r\022\034\n\023Unk3300_JMJHGJCAO" +
-      "BH\030\222\007 \001(\r\022\'\n\036element_durability_attenuat" +
-      "ion\030\207\006 \001(\002B\033\n\031emu.grasscutter.net.protob" +
-      "\006proto3"
+      " \001(\r\022\036\n\025amplify_reaction_type\030\316\r \001(\r\022\036\n\025" +
+      "addhurt_reaction_type\030\334\017 \001(\r\022.\n\016hit_eff_" +
+      "result\030\010 \001(\0132\026.AttackHitEffectResult\022\024\n\014" +
+      "endure_break\030\016 \001(\r\022.\n\022ability_identifier" +
+      "\030\007 \001(\0132\022.AbilityIdentifier\022\024\n\014hit_pos_ty" +
+      "pe\030\003 \001(\r\022\034\n\023attack_timestamp_ms\030\366\r \001(\r\022\026" +
+      "\n\rdamage_shield\030\214\017 \001(\002\022\025\n\014attack_count\030\314" +
+      "\013 \001(\r\022\027\n\016is_resist_text\030\371\004 \001(\010\022 \n\030hit_re" +
+      "treat_angle_compat\030\005 \001(\005\022$\n\rhit_collisio" +
+      "n\030\017 \001(\0132\r.HitCollision\022\034\n\023Unk3300_MGIMJG" +
+      "MIPLD\030\334\005 \001(\010\022\017\n\007is_crit\030\006 \001(\010\022\035\n\014resolve" +
+      "d_dir\030\013 \001(\0132\007.Vector\022\034\n\024element_amplify_" +
+      "rate\030\034 \001(\002\022\025\n\ranim_event_id\030\004 \001(\t\022\034\n\023Unk" +
+      "3300_GBPJCELJKJA\030\264\016 \001(\r\022\034\n\023Unk3300_JMJHG" +
+      "JCAOBH\030\222\007 \001(\r\022\'\n\036element_durability_atte" +
+      "nuation\030\207\006 \001(\002B\033\n\031emu.grasscutter.net.pr" +
+      "otob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3212,7 +3252,7 @@ public final class AttackResultOuterClass {
     internal_static_AttackResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AttackResult_descriptor,
-        new java.lang.String[] { "DefenseId", "AttackerId", "TargetType", "EndureDelta", "Unk3300DOMAOPGPHMD", "ElementType", "Unk3300BALCPHMFIBC", "Damage", "HashedAnimEventId", "CriticalRand", "Unk3300ABJJNNNKGBB", "Unk3300KPKAECBFABP", "HitEffResult", "EndureBreak", "AbilityIdentifier", "HitPosType", "AttackTimestampMs", "DamageShield", "AttackCount", "IsResistText", "HitRetreatAngleCompat", "HitCollision", "Unk3300MGIMJGMIPLD", "IsCrit", "ResolvedDir", "ElementAmplifyRate", "AnimEventId", "Unk3300GBPJCELJKJA", "Unk3300JMJHGJCAOBH", "ElementDurabilityAttenuation", });
+        new java.lang.String[] { "DefenseId", "AttackerId", "TargetType", "EndureDelta", "Unk3300DOMAOPGPHMD", "ElementType", "Unk3300BALCPHMFIBC", "Damage", "HashedAnimEventId", "CriticalRand", "AmplifyReactionType", "AddhurtReactionType", "HitEffResult", "EndureBreak", "AbilityIdentifier", "HitPosType", "AttackTimestampMs", "DamageShield", "AttackCount", "IsResistText", "HitRetreatAngleCompat", "HitCollision", "Unk3300MGIMJGMIPLD", "IsCrit", "ResolvedDir", "ElementAmplifyRate", "AnimEventId", "Unk3300GBPJCELJKJA", "Unk3300JMJHGJCAOBH", "ElementDurabilityAttenuation", });
     emu.grasscutter.net.proto.AbilityIdentifierOuterClass.getDescriptor();
     emu.grasscutter.net.proto.AttackHitEffectResultOuterClass.getDescriptor();
     emu.grasscutter.net.proto.HitCollisionOuterClass.getDescriptor();
