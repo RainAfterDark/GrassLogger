@@ -7,7 +7,7 @@ on:
     branches:
       - "stable"
       - "grasslogger"
-      - "grasslogger-dev"
+      - "grasslogger-**"
   pull_request:
     paths:
       - "**.java"
