@@ -272,7 +272,7 @@ public class GrassLogger {
             Float.toString(attackResult.getElementDurabilityAttenuation()),
             getElementName(element.getValue()),
             getReaction(aid, mid, element, getRoot(attackerId)),
-            AmplificationType.getTypeByValue(attackResult.getAmplifyReactionType()).toString(),
+            AmplificationType.getTypeByValue(attackResult.getUnk3300ABJJNNNKGBB()).toString(),
             Float.toString(attackResult.getElementAmplifyRate()),
             Integer.toString(attackResult.getAttackCount()),
             Integer.toString(aid),
