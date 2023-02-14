@@ -42,7 +42,7 @@ public class GrassLogger {
         "Frozen", "Anemo", "Geo", "AntiFire", "VehicleMuteIce",
         "Mushroom", "Overdose", "Wood", "COUNT"
     };
-    
+
     private static int uidCount = 0;
     private static long lastTime = 0;
 
@@ -52,7 +52,7 @@ public class GrassLogger {
 
     private static final Int2IntMap gadgetOwnerMap = new Int2IntOpenHashMap();
     private static final Int2IntMap gadgetIdMap = new Int2IntOpenHashMap();
-    
+
     private static final Int2ObjectMap<MonsterAffix> monsterAffixMap = new Int2ObjectOpenHashMap<>();
     private static final Int2ObjectMap<String> monsterNameMap = new Int2ObjectOpenHashMap<>();
 
@@ -204,7 +204,7 @@ public class GrassLogger {
         }
 
         AbilityReaction reaction = AbilityReaction.getTypeByValue(aid);
-        if (reaction != null && element == reactionElements.get(reaction)) 
+        if (reaction != null && element == reactionElements.get(reaction))
             return reaction.toString();
         return "None";
     }

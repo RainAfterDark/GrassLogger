@@ -7,8 +7,8 @@ import emu.grasscutter.net.proto.GetHomeLevelUpRewardRspOuterClass.GetHomeLevelU
 public class PacketGetHomeLevelUpRewardRsp extends BasePacket {
 
     public PacketGetHomeLevelUpRewardRsp(int level, int rewardId) {
-		super(PacketOpcodes.GetHomeLevelUpRewardRsp);
-        
+        super(PacketOpcodes.GetHomeLevelUpRewardRsp);
+
         int retcode = 0;
 
         if (rewardId == 0) {
@@ -20,6 +20,6 @@ public class PacketGetHomeLevelUpRewardRsp extends BasePacket {
                 .setRetcode(retcode)
                 .build();
 
-		this.setData(proto);
-	}
+        this.setData(proto);
+    }
 }

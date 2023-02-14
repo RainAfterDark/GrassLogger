@@ -11,40 +11,40 @@ import emu.grasscutter.utils.GrassLogger;
 
 public class PacketSceneTeamUpdateNotify extends BasePacket {
 
-	public PacketSceneTeamUpdateNotify(Player player) {
-		super(PacketOpcodes.SceneTeamUpdateNotify);
+    public PacketSceneTeamUpdateNotify(Player player) {
+        super(PacketOpcodes.SceneTeamUpdateNotify);
 
-		SceneTeamUpdateNotify.Builder proto = SceneTeamUpdateNotify.newBuilder()
-				.setIsInMp(player.getWorld().isMultiplayer());
+        SceneTeamUpdateNotify.Builder proto = SceneTeamUpdateNotify.newBuilder()
+                .setIsInMp(player.getWorld().isMultiplayer());
 
         GrassLogger.reset();
-		for (Player p : player.getWorld().getPlayers()) {
-			for (EntityAvatar entityAvatar : p.getTeamManager().getActiveTeam()) {
+        for (Player p : player.getWorld().getPlayers()) {
+            for (EntityAvatar entityAvatar : p.getTeamManager().getActiveTeam()) {
                 GrassLogger.registerAvatar(entityAvatar);
-				SceneTeamAvatar.Builder avatarProto = SceneTeamAvatar.newBuilder()
-						.setPlayerUid(p.getUid())
-						.setAvatarGuid(entityAvatar.getAvatar().getGuid())
-						.setSceneId(p.getSceneId())
-						.setEntityId(entityAvatar.getId())
-						.setSceneEntityInfo(entityAvatar.toProto())
-						.setWeaponGuid(entityAvatar.getAvatar().getWeapon().getGuid())
-						.setWeaponEntityId(entityAvatar.getWeaponEntityId())
-						.setIsPlayerCurAvatar(p.getTeamManager().getCurrentAvatarEntity() == entityAvatar)
-						.setIsOnScene(p.getTeamManager().getCurrentAvatarEntity() == entityAvatar)
-						.setAvatarAbilityInfo(AbilitySyncStateInfo.newBuilder())
-						.setWeaponAbilityInfo(AbilitySyncStateInfo.newBuilder())
-						.setAbilityControlBlock(entityAvatar.getAbilityControlBlock());
+                SceneTeamAvatar.Builder avatarProto = SceneTeamAvatar.newBuilder()
+                        .setPlayerUid(p.getUid())
+                        .setAvatarGuid(entityAvatar.getAvatar().getGuid())
+                        .setSceneId(p.getSceneId())
+                        .setEntityId(entityAvatar.getId())
+                        .setSceneEntityInfo(entityAvatar.toProto())
+                        .setWeaponGuid(entityAvatar.getAvatar().getWeapon().getGuid())
+                        .setWeaponEntityId(entityAvatar.getWeaponEntityId())
+                        .setIsPlayerCurAvatar(p.getTeamManager().getCurrentAvatarEntity() == entityAvatar)
+                        .setIsOnScene(p.getTeamManager().getCurrentAvatarEntity() == entityAvatar)
+                        .setAvatarAbilityInfo(AbilitySyncStateInfo.newBuilder())
+                        .setWeaponAbilityInfo(AbilitySyncStateInfo.newBuilder())
+                        .setAbilityControlBlock(entityAvatar.getAbilityControlBlock());
 
-				if (player.getWorld().isMultiplayer()) {
-					avatarProto.setAvatarInfo(entityAvatar.getAvatar().toProto());
-					avatarProto.setSceneAvatarInfo(entityAvatar.getSceneAvatarInfo()); // why mihoyo...
-				}
+                if (player.getWorld().isMultiplayer()) {
+                    avatarProto.setAvatarInfo(entityAvatar.getAvatar().toProto());
+                    avatarProto.setSceneAvatarInfo(entityAvatar.getSceneAvatarInfo()); // why mihoyo...
+                }
 
-				proto.addSceneTeamAvatarList(avatarProto);
-			}
-		}
+                proto.addSceneTeamAvatarList(avatarProto);
+            }
+        }
 
         GrassLogger.logTeamUpdate();
-		this.setData(proto);
-	}
+        this.setData(proto);
+    }
 }
