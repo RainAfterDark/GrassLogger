@@ -31,7 +31,7 @@ build/
 out/
 
 # Ignore Gradle properties
-gradle.properties
+#gradle.properties
 
 # Eclipse
 .project
