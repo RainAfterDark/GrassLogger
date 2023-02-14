@@ -161,6 +161,15 @@
       "giveall_success": "成功給予所有物品。",
       "description": "給予指定物品。"
     },
+    "givesalt": {
+      "description": "🇺🇸Gives all lvl 90 characters with all constellations as items, and all weapons from R1 to R5."
+    },
+    "dmgswitch": {
+      "description": "🇺🇸Toggles damage to enemies (logger unaffected)."
+    },
+    "kaze": {
+      "description": "🇺🇸Gain a 'blessing' from the Anemo Archon."
+    },
     "heal": {
       "success": "所有角色已被治療。",
       "description": "治療當前隊伍的角色。"

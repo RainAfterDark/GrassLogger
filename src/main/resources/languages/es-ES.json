@@ -161,6 +161,15 @@
       "giveall_success": "Se han dado todos los objetos correctamente.",
       "description": "Da un objeto a ti o al jugador especificado. También puede dar armas, avatares y/o materiales, y puede construir artefactos personalizados."
     },
+    "givesalt": {
+      "description": "🇺🇸Gives all lvl 90 characters with all constellations as items, and all weapons from R1 to R5."
+    },
+    "dmgswitch": {
+      "description": "🇺🇸Toggles damage to enemies (logger unaffected)."
+    },
+    "kaze": {
+      "description": "🇺🇸Gain a 'blessing' from the Anemo Archon."
+    },
     "heal": {
       "success": "Todos los personajes han sido curados.",
       "description": "Cura a todos los personajes en tu equipo actual."
@@ -364,23 +373,23 @@
   },
   "documentation": {
     "handbook": {
-      "title": "GM Handbook",
+      "title": "🇺🇸GM Handbook",
       "title_commands": "Comandos",
       "title_avatars": "Avatares",
       "title_items": "Objetos",
       "title_scenes": "Escenario",
       "title_monsters": "Monstruos",
-      "header_id": "Id",
+      "header_id": "🇺🇸Id",
       "header_command": "Comando",
       "header_description": "Descripción",
-      "header_avatar": "Avatar",
+      "header_avatar": "🇺🇸Avatar",
       "header_item": "Objeto",
       "header_scene": "Escenario",
       "header_monster": "Monstruo"
     },
     "index": {
       "title": "Documentación",
-      "handbook": "GM Handbook",
+      "handbook": "🇺🇸GM Handbook",
       "gacha_mapping": "JSON de mapeo del Gacha"
     }
   },

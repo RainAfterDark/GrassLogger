@@ -161,6 +161,15 @@
       "giveall_success": "すべてのアイテムを与えました。",
       "description": "あなたまたは指定されたプレイヤーにアイテムを与えます。 また、すべての武器、アバター、および/または材料を与えることができ、指定した聖遺物を構築することもできます。"
     },
+    "givesalt": {
+      "description": "🇺🇸Gives all lvl 90 characters with all constellations as items, and all weapons from R1 to R5."
+    },
+    "dmgswitch": {
+      "description": "🇺🇸Toggles damage to enemies (logger unaffected)."
+    },
+    "kaze": {
+      "description": "🇺🇸Gain a 'blessing' from the Anemo Archon."
+    },
     "heal": {
       "success": "全キャラを回復しました｡",
       "description": "現在のパーティーのキャラクターのみを回復します｡"

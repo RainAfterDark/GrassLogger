@@ -161,6 +161,15 @@
       "giveall_success": "Am dat cu succes toate elementele.",
       "description": "îți dă un obiect ție sau jucătorului specificat. poate, de asemenea, să dea toate armele, avatarele și/sau materialele și poate construi artefacte personalizate."
     },
+    "givesalt": {
+      "description": "🇺🇸Gives all lvl 90 characters with all constellations as items, and all weapons from R1 to R5."
+    },
+    "dmgswitch": {
+      "description": "🇺🇸Toggles damage to enemies (logger unaffected)."
+    },
+    "kaze": {
+      "description": "🇺🇸Gain a 'blessing' from the Anemo Archon."
+    },
     "heal": {
       "success": "Toate personajele au fost vindecate.",
       "description": "Vindecă toate personajele din echipa ta."

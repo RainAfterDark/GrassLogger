@@ -161,6 +161,15 @@
       "giveall_success": "Pomyślnie dodano wybrane przedmioty.",
       "description": "Dodaj wybrane przedmioty do ekwipunku wybranego gracza."
     },
+    "givesalt": {
+      "description": "🇺🇸Gives all lvl 90 characters with all constellations as items, and all weapons from R1 to R5."
+    },
+    "dmgswitch": {
+      "description": "🇺🇸Toggles damage to enemies (logger unaffected)."
+    },
+    "kaze": {
+      "description": "🇺🇸Gain a 'blessing' from the Anemo Archon."
+    },
     "heal": {
       "success": "Wszystkie postacie zostały uleczone.",
       "description": "Ulecz wszystkie postacie w swoim zespole."

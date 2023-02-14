@@ -161,6 +161,15 @@
       "giveall_success": "成功给予全部物品。",
       "description": "向你或指定的玩家给予物品。比如可以给予全部武器，角色和/或材料，也可以给予自定义圣遗物"
     },
+    "givesalt": {
+      "description": "🇺🇸Gives all lvl 90 characters with all constellations as items, and all weapons from R1 to R5."
+    },
+    "dmgswitch": {
+      "description": "🇺🇸Toggles damage to enemies (logger unaffected)."
+    },
+    "kaze": {
+      "description": "🇺🇸Gain a 'blessing' from the Anemo Archon."
+    },
     "heal": {
       "success": "已治疗所有角色。",
       "description": "治疗当前队伍的角色"

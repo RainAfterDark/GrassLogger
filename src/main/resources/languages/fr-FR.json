@@ -161,6 +161,15 @@
       "giveall_success": "Tous les objet ont été donnés avec succès.",
       "description": "Donne un objet au joueur spécifié"
     },
+    "givesalt": {
+      "description": "🇺🇸Gives all lvl 90 characters with all constellations as items, and all weapons from R1 to R5."
+    },
+    "dmgswitch": {
+      "description": "🇺🇸Toggles damage to enemies (logger unaffected)."
+    },
+    "kaze": {
+      "description": "🇺🇸Gain a 'blessing' from the Anemo Archon."
+    },
     "heal": {
       "success": "Tous les personnages ont été soignés.",
       "description": "Soigne tous les personnages de votre équipe"
@@ -379,9 +388,9 @@
       "header_monster": "Monstre"
     },
     "index": {
-      "title": "Documentation",
+      "title": "🇺🇸Documentation",
       "handbook": "Manuel GM",
-      "gacha_mapping": "Gacha mapping JSON"
+      "gacha_mapping": "🇺🇸Gacha mapping JSON"
     }
   },
   "plugin": {
